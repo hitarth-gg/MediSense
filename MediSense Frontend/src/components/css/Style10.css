@@ -1,0 +1,45 @@
+.style-10 {
+    position: relative;
+    color: #000;
+    text-decoration: none;
+    /* font-family: freightdispcmp-pro, serif; */
+    /* font-size: 1.75rem; */
+    &:hover {
+      &:before, &:after {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+        transition-timing-function: cubic-bezier(0.2, 0, 0.3, 1);
+      }
+      &:before {
+        transition-delay: 0s;
+      }
+      &:after {
+        transition-delay: 0.1s;
+      }
+    }
+    &:before, &:after {
+      content: "";
+      position: absolute;
+      top: 100%;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      background: #000;
+      pointer-events: none;
+      opacity: 0;
+      transform-origin: 50% 0%;
+      transform: translate3d(0, 3px, 0);
+      transition-property: transform, opacity;
+      transition-duration: 0.3s;
+      transition-timing-function: cubic-bezier(0.2, 1, 0.8, 1);
+    }
+    &:before {
+      transition-delay: 0.1s;
+    }
+    &:after {
+      content: '';
+      top: calc(100% + 4px);
+      width: 70%;
+      left: 15%;
+    }
+  }
