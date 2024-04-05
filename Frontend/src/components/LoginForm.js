@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 // import { NavLink } from "react-router-dom";
 import axios from "axios";
+import {toast} from 'react-hot-toast';
 
 export default function LoginForm() {
   const [email, setEmail] = useState();
@@ -14,7 +15,19 @@ export default function LoginForm() {
               email,
               password,
           });
-          console.log(res.data);
+          // console.log(res.data);
+          // console.log(res.data.message);
+          if(res.data.success){
+            toast.success(res.data.message);
+            if(res.data.details.user.role === "doctor"){
+              window.location.href = "/list";
+            }
+            else{
+              window.location.href = "/choose";
+            }
+          }else{
+            toast.error(res.data.message);
+          }
       } catch (err) {
           console.log(err);
       }

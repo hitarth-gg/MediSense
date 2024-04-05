@@ -35,7 +35,7 @@ exports.signup = async (req, res) => {
     });
   } catch (error) {
     console.error(error);
-    return res.status(500).json({
+    return res.status(200).json({
       success: false,
       message: "User cannot be registered, please try again later",
     });
@@ -48,8 +48,8 @@ exports.login = async (req, res) => {
     //data fetch
     const { email, password } = req.body;
     //validation on email and password
-    if (!email || !password) {
-      return res.status(400).json({
+    if (email.length === 0 || password.length===0) {
+      return res.status(200).json({
         success: false,
         message: "Please provide email and password",
       });
@@ -58,7 +58,7 @@ exports.login = async (req, res) => {
     //check for registered user
     let user = await User.findOne({ email });
     if (!user) {
-      return res.status(400).json({
+      return res.status(200).json({
         success: false,
         message: "User does not exist",
       });
@@ -66,13 +66,13 @@ exports.login = async (req, res) => {
       if (user.password === password) {
         return res.status(200).json({
           success: true,
-          message: "User Loggedasd in Successfully",
+          message: "User Logged in Successfully",
           details: {user},
 
           // user details excluding password : LATER
         });
       } else {
-        return res.status(401).json({
+        return res.status(200).json({
           success: false,
           message: "Incorrect Password",
         });
@@ -80,7 +80,7 @@ exports.login = async (req, res) => {
     }
   } catch (error) {
     console.error(error);
-    return res.status(500).json({
+    return res.status(200).json({
       success: false,
       message: "User cannot be logged in, please try again later",
     });

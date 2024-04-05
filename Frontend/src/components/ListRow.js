@@ -1,6 +1,6 @@
 export default function ListRow() {
     return (
-        <div className="card2 border-2 flex flex-row rounded-md border-[#dee8ef] justify-start items-center transition-all ease-in-out duration-150 my-5 p-5 hover:border-[#55a6f6] hover:bg-[#ebf5fe] text-sm text-[#4c5967] space-x-20">
+        <div className="animate-slidein opacity-0 card2 border-2 flex flex-row rounded-md border-[#dee8ef] justify-start items-center transition-all ease-in-out duration-150 my-5 p-5 hover:border-[#55a6f6] hover:bg-[#ebf5fe] text-sm text-[#4c5967] space-x-20">
         {/* --------------------------------- */}
 
         <div className="one">
