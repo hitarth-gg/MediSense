@@ -1,6 +1,6 @@
 import darkBgImg from "../img/darkbgimg.jpeg";
 import Button1 from "./Button1";
-import { NavLink } from 'react-router-dom'
+import { NavLink } from "react-router-dom";
 
 export default function Hero() {
   return (
@@ -15,13 +15,15 @@ export default function Hero() {
           <div className="text-[#4876ee]">‎ MediSense</div>
         </div>
         <div className="max-w-xl animate-slidein500 opacity-0">
-          Explore our cutting-edge dashboard, delivering high-quality solutions
-          tailored to your needs. Elevate your experience with top-tier features
-          and services.
+          Revolutionizing Remote Healthcare Accessibility with AI
         </div>
         <div className="customButtons animate-slidein700 opacity-0 flex space-x-10 my-8">
-          <NavLink to="/login"><Button1 text={"Facilitator"} /> </NavLink>
-          <NavLink to="/login"><Button1 text={"Doctor"} /> </NavLink>
+          <NavLink to="/login">
+            <Button1 text={"Facilitator"} />{" "}
+          </NavLink>
+          <NavLink to="/login">
+            <Button1 text={"Doctor"} />{" "}
+          </NavLink>
         </div>
       </div>
 
