@@ -16,11 +16,7 @@ export default function Navbar() {
           />{" "}
         </NavLink>
         <div className="headings style-10 cursor-pointer">About</div>
-        <div className="headings style-10 cursor-pointer">
-          <a href="#features" className="scroll-smooth">
-            Features
-          </a>
-        </div>
+        <div className="headings style-10 cursor-pointer">Features</div>
         <div className="headings style-10 cursor-pointer">How It Works</div>
         <div className="headings style-10 cursor-pointer">Blog</div>
       </div>
