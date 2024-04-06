@@ -10,14 +10,19 @@ export default function Navbar() {
       <div className="left flex justify-start items-center space-x-6 ">
         <NavLink to="/">
           <img
-          className="h-5 object-contain mx-2"
-          src="https://imgur.com/9iliXyo.jpeg"
-          alt="logo"
-          /> </NavLink>
-        <div className="headin`gs style-10 cursor-pointer">Learn</div>
-        <div className="headings style-10 cursor-pointer">Use</div>
-        <div className="headings style-10 cursor-pointer">Build</div>
-        <div className="headings style-10 cursor-pointer">Research</div>
+            className="h-5 mx-2"
+            src="https://imgur.com/9iliXyo.jpeg"
+            alt="logo"
+          />{" "}
+        </NavLink>
+        <div className="headings style-10 cursor-pointer">About</div>
+        <div className="headings style-10 cursor-pointer">
+          <a href="#features" className="scroll-smooth">
+            Features
+          </a>
+        </div>
+        <div className="headings style-10 cursor-pointer">How It Works</div>
+        <div className="headings style-10 cursor-pointer">Blog</div>
       </div>
       <div className="right flex justify-center items-center   ">
         <SearchBox />

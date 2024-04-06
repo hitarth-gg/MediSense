@@ -5,21 +5,42 @@ export default function Features() {
   return (
     <div className="features flex flex-col md:flex-row justify-center items-center  lg:mx-20 md:mx-10 sm:mx-5 md:space-x-10 text-left xl:space-x-20  sm:flex-col sm:max-h-fit lg:space-x-10">
       <div className="left flex flex-col">
-        <div className=" text-4xl text-[#131b20] font-semibold mb-5">
-          Product Features
+        <div className=" text-4xl text-[#131b20] font-semibold mb-5" id="features">
+          Streamlining Remote Healthcare Diagnosis
         </div>
         <div className="max-w-xl text-left">
-          Here you can provide a brief overview of the key features of the
-          product. For example, you could list the number of features, the types
-          of features, add-ons, or the benefits of the features
+          This is how we revolutionalize remote healthcare accessibility:
         </div>
         <div className="cards">
-          <Card1 />
-          <Card1 />
-          <Card1 />
+          <Card1
+            title="Booth-Based Facilitation"
+            text="We establish facilitator-equipped booths in remote areas staffed by trained personnel to assist individuals in utilizing MediSense."
+            link="https://www.google.com"
+            linkName="Sign Up as a Facilitator"
+          />
+          <Card1
+            title="Input Methods"
+            text="Facilitator gather patient information like symptom descriptions and medical images, ensuring comprehensive data collection for precise analysis."
+            link="https://www.google.com"
+            linkName="Our Input Guidelines and Methodology"
+          />
+          <Card1
+            title="Problem Report Compilation"
+            text="AI  will then utilize collected data to generate detailed problem reports containing essential diagnostic information."
+            link="https://www.google.com"
+            linkName="Learn More"
+          />
+          <Card1
+            title="Doctor Communication"
+            text="Problem reports is then transferred to designated doctors, enabling timely diagnosis and prioritization of patients for further consultation."
+            link="https://www.google.com"
+            linkName="View Our Doctor Network"
+          />
         </div>
       </div>
-      <div className="right flex flex-col items-center justify-center"> {/* Continue ... */}
+      <div className="right flex flex-col items-center justify-center">
+        {" "}
+        {/* Continue ... */}
         <Container1 />
       </div>
     </div>

@@ -4,9 +4,11 @@ import LandingPage from "./pages/LandingPage";
 import ErrorComponent from "./pages/ErrorComponent";
 import Choose from "./pages/Choose";
 import LoginPage from "./pages/LoginPage";
-import DoctorList from "./pages/DoctorList";
 
+import SignUpPage from "./pages/SignUpPage";
+import DoctorList from "./pages/DoctorList";
 import AuthProvider, { useAuth } from "./security/AuthContext";
+
 
 export default function MedisenseApp() {
   function AuthenticatedRoute({ children }) {
@@ -32,6 +34,7 @@ export default function MedisenseApp() {
               }
             />
             <Route path="/login" element={<LoginPage />} />
+            <Route path="/facilitator/signup" element={<SignUpPage />} />
             <Route path="/list" element={<DoctorList />} />
             <Route path="*" element={<ErrorComponent />} />
           </Routes>

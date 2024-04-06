@@ -1,40 +1,28 @@
-
-import React, { useEffect, useState } from "react";
-// import { NavLink } from "react-router-dom";
-import axios from "axios";
-import {toast} from 'react-hot-toast';
-  
+import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import Button1 from "./Button1";
 
-export default function LoginForm() {
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
+export default function SignupForm() {
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+    confirmPassword: "",
+    state: "",
+    district: "",
+  });
 
-  const handleSubmit = async (e) => {
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
 
-      e.preventDefault();
-      try {
-          const res = await axios.post("http://localhost:3000/login/", {
-              email,
-              password,
-          });
-          // console.log(res.data);
-          // console.log(res.data.message);
-          if(res.data.success){
-            toast.success(res.data.message);
-            if(res.data.details.user.role === "doctor"){
-              window.location.href = "/list";
-            }
-            else{
-              window.location.href = "/choose";
-            }
-          }else{
-            toast.error(res.data.message);
-          }
-      } catch (err) {
-          console.log(err);
-      }
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(formData);
+    // Add your sign-up logic here, e.g. sending data to backend API
   };
 
   return (
@@ -44,9 +32,9 @@ export default function LoginForm() {
           <div className="w-full bg-transparent rounded-lg shadow-2xl  md:mt-0 sm:max-w-md xl:p-0 ">
             <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
               <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl">
-                Sign in to your account
+                Sign up for a facilitator account
               </h1>
-              <div className="space-y-4 md:space-y-6">
+              <form className="space-y-4 md:space-y-6" onSubmit={handleSubmit}>
                 <div>
                   <label
                     htmlFor="email"
@@ -56,9 +44,10 @@ export default function LoginForm() {
                   </label>
                   <input
                     type="email"
-                    onChange={(e) => setEmail(e.target.value)}
                     name="email"
                     id="email"
+                    value={formData.email}
+                    onChange={handleChange}
                     className="bg-transparent border border-gray-800 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
                     placeholder="name@company.com"
                     required=""
@@ -73,61 +62,85 @@ export default function LoginForm() {
                   </label>
                   <input
                     type="password"
-                    onChange={(e) => setPassword(e.target.value)}
                     name="password"
                     id="password"
-                    placeholder="••••••••"
+                    value={formData.password}
+                    onChange={handleChange}
                     className="bg-transparent border border-gray-800 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                    placeholder=""
                     required=""
                   />
                 </div>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-start">
-                    <div className="flex items-center h-5">
-                      <input
-                        id="remember"
-                        aria-describedby="remember"
-                        type="checkbox"
-                        className="w-4 h-4 border border-gray-800 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800"
-                        required=""
-                      />
-                    </div>
-                    <div className="ml-3 text-sm">
-                      <label htmlFor="remember" className="text-gray-700">
-                        Remember me
-                      </label>
-                    </div>
-                  </div>
-                  <a
-                    href="#"
-                    className="text-sm text-[#4876ee] hover:underline font-bold"
+                <div>
+                  <label
+                    htmlFor="confirmPassword"
+                    className="block mb-2 text-sm font-bold text-[#4876ee]"
                   >
-                    Forgot password?
-                  </a>
-
+                    Confirm Password
+                  </label>
+                  <input
+                    type="password"
+                    name="confirmPassword"
+                    id="confirmPassword"
+                    value={formData.confirmPassword}
+                    onChange={handleChange}
+                    className="bg-transparent border border-gray-800 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                    placeholder=""
+                    required=""
+                  />
                 </div>
-                <button
-                //   type="submit"
-                //   onSubmit={ () => {console.log("asdasd")}}
-                onClick={handleSubmit}
-                  className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
-                >
-                  Sign in
-                </button>
-                <p className="text-sm font-light text-gray-700">
-                  Don't have an account yet?{" "}
-                  <a
-                    href="#"
-                    className="text-[#4876ee] font-bold hover:underline "
+                <div>
+                  <label
+                    htmlFor="state"
+                    className="block mb-2 text-sm font-bold text-[#4876ee]"
                   >
-                    Sign up
-                  </a>
+                    Select State
+                  </label>
+                  <select
+                    name="state"
+                    id="state"
+                    value={formData.state}
+                    onChange={handleChange}
+                    className="bg-transparent border border-gray-800 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                    required=""
+                  >
+                    {/* Add options for states */}
+                  </select>
+                </div>
+                <div>
+                  <label
+                    htmlFor="district"
+                    className="block mb-2 text-sm font-bold text-[#4876ee]"
+                  >
+                    Select District
+                  </label>
+                  <select
+                    name="district"
+                    id="district"
+                    value={formData.district}
+                    onChange={handleChange}
+                    className="bg-transparent border border-gray-800 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                    required=""
+                  >
+                    {/* Add options for districts */}
+                  </select>
+                </div>
+                <div className="my-5">
+                  <Button1 text="Sign up" />
+                </div>
+                <p className="text-sm font-light text-gray-700">
+                  Already have an account?{" "}
+                  <NavLink
+                    to="/login"
+                    className="text-[#4876ee] font-bold hover:underline"
+                  >
+                    Sign in
+                  </NavLink>
                 </p>
-              </div>
+              </form>
             </div>
           </div>
         </div>
-
         {/* ---------------------- gradient ---------------------- */}
         <div
           className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80"
