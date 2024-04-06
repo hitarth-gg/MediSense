@@ -1,4 +1,5 @@
-export default function ListRow() {
+// export default function ListRow({name, age, sex, presentCase, pastHistory, durationOfSymptoms, physicalExamination, remarks, status}) {
+export default function ListRow({name, age, sex, presentCase, pastHistory, durationOfSymptoms, physicalExamination, remarks, status}) {
     return (
         <div className="animate-slidein opacity-0 card2 border-2 flex flex-row rounded-md border-[#dee8ef] justify-start items-center transition-all ease-in-out duration-150 my-5 p-5 hover:border-[#55a6f6] hover:bg-[#ebf5fe] text-sm text-[#4c5967] space-x-20">
         {/* --------------------------------- */}
@@ -6,48 +7,49 @@ export default function ListRow() {
         <div className="one">
           <div className="flex flex-row space-x-2">
             <p className="font-semibold">Name:</p>
-            <p>Dev Darshan</p>
+            <p>{name}</p>
           </div>
           <div className="flex flex-row space-x-2">
             <p className="font-semibold">Age:</p>
-            <p>27</p>
+            <p>{age}</p>
           </div>
           <div className="flex flex-row space-x-2">
             <p className="font-semibold">Sex:</p>
-            <p>Male</p>
+            <p>{sex}</p>
           </div>
         </div>
         {/* --------------------------------- */}
         <div className="one">
           <div className="flex flex-row space-x-2">
             <p className="font-semibold">Present Case:</p>
-            <p>Palpitations, Asdas, Asdasd</p>
+            <p>{presentCase}</p>
           </div>
           <div className="flex flex-row space-x-2">
             <p className="font-semibold">Past History:</p>
-            <p>Healthy</p>
+            <p>{pastHistory}</p>
           </div>
           <div className="flex flex-row space-x-2">
             <p className="font-semibold">Duration of Symptoms:</p>
-            <p>2 Weeks</p>
+            <p>{durationOfSymptoms}</p>
           </div>
         </div>
         {/* --------------------------------- */}
         <div className="one">
           <div className="flex flex-row space-x-2">
             <p className="font-semibold">Physical Examination:</p>
-            <p>Palpitations, Asdas, Asdasd</p>
+            <p>{physicalExamination}</p>
           </div>
           <div className="flex flex-row space-x-2">
             <p className="font-semibold">Remarks:</p>
-            <p>Healthy</p>
+            <p>{remarks}</p>
           </div>
         </div>
         {/* --------------------------------- */}
         <div className="one">
           <div className="flex flex-row space-x-2">
             <div className="min-w-2 border-2 text-[.8rem] rounded-lg px-2 py-1 bg-green-100 border-green-300 ">
-              Not Eval {/* Eval, Assigned */}
+              {/* Not Eval Eval, Assigned */}
+              {status}
             </div>
           </div>
         </div>

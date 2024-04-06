@@ -171,3 +171,21 @@ exports.formpush = async (req, res) => {
     });
   }
 };
+
+// to get all the forms
+exports.getAllForms = async (req, res) => {
+  try {
+    const forms = await Form.find();
+    return res.status(200).json({
+      success: true,
+      message: "Forms retrieved successfully",
+      details: { forms },
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(200).json({
+      success: false,
+      message: "Forms cannot be retrieved, please try again later",
+    });
+  }
+};

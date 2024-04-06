@@ -42,7 +42,8 @@ export default function MedisenseApp() {
               path="/facilitator/filldetails"
               element={<PatientDetailsForm />}
             />
-            <Route path="/doctor/list" element={<DoctorList />} />
+            {/* <Route path="/doctor/list" element={<DoctorList />} /> */}
+            <Route path="/list" element={<DoctorList />} />
             <Route path="/doctor/dashboard" element={<DoctorDashboard />} />
             <Route path="*" element={<ErrorComponent />} />
           </Routes>
