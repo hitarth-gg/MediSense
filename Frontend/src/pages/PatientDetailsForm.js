@@ -144,9 +144,9 @@ export default function PatientDetailsForm() {
         <button
             onClick={handleSubmit}
             type="submit"
-            className="bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 text-white font-medium rounded-lg text-sm px-5 py-2.5"
+            className="bg-blue-600 transition-all ease-in-out hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-primary-300 text-white font-medium rounded-lg text-sm px-5 py-2.5"
         >
-          Submit
+          Generate Support
         </button>
       </form>
     </div>
