@@ -19,20 +19,19 @@ export default function LoginForm() {
         email,
         password,
       });
-      // console.log(res.data); 
+      // console.log(res.data);
       // console.log(res.data.message);
       if (res.data.success) {
         toast.success(res.data.message);
         // authContext.setAuthenticated(true);
         // authContext.printAccess();
         console.log("res.data.details.user.role", res.data.details.user.role);
-        
-        
+
         if (res.data.details.user.role === "doctor") {
           // window.location.href = "/list";
           <NavLink to="/list" />;
         } else {
-          window.location.href = "/choose";
+          window.location.href = "/facilitator/dashboard";
         }
       } else {
         authContext.access();
@@ -120,12 +119,12 @@ export default function LoginForm() {
                 </div>
                 <p className="text-sm font-light text-gray-700">
                   Don't have an account yet?{" "}
-                  <a
-                    href="#"
-                    className="text-[#4876ee] font-bold hover:underline "
+                  <NavLink
+                    to="/facilitator/signup"
+                    className="text-[#4876ee] font-bold hover:underline"
                   >
                     Sign up
-                  </a>
+                  </NavLink>
                 </p>
               </div>
             </div>

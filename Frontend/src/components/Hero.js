@@ -1,6 +1,6 @@
-import darkBgImg from "../img/darkbgimg.jpeg";
 import Button1 from "./Button1";
 import { NavLink } from "react-router-dom";
+import Typewriter from "typewriter-effect";
 
 export default function Hero() {
   return (
@@ -15,15 +15,29 @@ export default function Hero() {
           <div className="text-[#4876ee]">‎ MediSense</div>
         </div>
         <div className="max-w-xl animate-slidein500 opacity-0">
-          Revolutionizing Remote Healthcare Accessibility with AI
+          <Typewriter
+            options={{
+              strings: [
+                "Revolutionizing Remote Healthcare Accessibility with AI",
+                "Empowering Doctors with AI-driven Insights",
+                "Sign up as a facilitator for your region",
+              ],
+              autoStart: true,
+              loop: true,
+              delay: 50,
+            }}
+          />
         </div>
-        <div className="customButtons animate-slidein700 opacity-0 flex space-x-10 my-8">
-          <NavLink to="/login">
-            <Button1 text={"Facilitator"} />{" "}
-          </NavLink>
-          <NavLink to="/login">
-            <Button1 text={"Doctor"} />{" "}
-          </NavLink>
+        <div className="backdrop-blur-xl font-semibold blurclass bg-transparent p-15 animate-slidein700 p-6 rounded-lg border border-[#55a6f6] mt-8 bg-opacity-95 ">
+          Sign up/Login as a:
+          <div className="customButtons m-10 flex space-x-10">
+            <NavLink to="/login">
+              <Button1 text={"Facilitator"} />{" "}
+            </NavLink>
+            <NavLink to="/login">
+              <Button1 text={"Doctor"} />{" "}
+            </NavLink>
+          </div>
         </div>
       </div>
 
