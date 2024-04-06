@@ -17,8 +17,8 @@ export default function PatientDetailsForm() {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevState) => ({
-        ...prevState,
-        [name]: value,
+      ...prevState,
+      [name]: value,
     }));
   };
 
@@ -28,7 +28,6 @@ export default function PatientDetailsForm() {
       medicalImages: e.target.files[0],
     });
   };
-
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -52,7 +51,6 @@ export default function PatientDetailsForm() {
       // Handle error notification
     }
   };
-
 
   return (
     <div className="bg-transparent rounded-lg shadow-2xl p-6">
@@ -84,7 +82,9 @@ export default function PatientDetailsForm() {
             className="bg-transparent border border-gray-800 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
             required
           >
-            <option value="" disabled>Select Sex</option>
+            <option value="" disabled>
+              Select Sex
+            </option>
             <option value="male">Male</option>
             <option value="female">Female</option>
             <option value="other">Other</option>
@@ -131,23 +131,21 @@ export default function PatientDetailsForm() {
             required
           ></textarea>
 
-        <input
+          <input
             type="file"
             name="medicalImages"
             onChange={handleImageChange}
             accept="image/*"
             className="bg-transparent border border-gray-800 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
           />
-
-                
         </div>
-        <button
-            onClick={handleSubmit}
-            type="submit"
-            className="bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 text-white font-medium rounded-lg text-sm px-5 py-2.5"
+        <div
+          onClick={handleSubmit}
+          class="relative rounded min-w-32 px-5 py-2.5 overflow-hidden group bg-[#4876ee] hover:bg-gradient-to-r hover:from-blue-500 hover:to-blue-400 text-white hover:ring-2 hover:ring-offset-2 hover:ring-blue-400 transition-all ease-out duration-300 max-w-40 mx-auto"
         >
-          Submit
-        </button>
+          <span class="absolute right-0 w-8 h-32 -mt-12 transition-all duration-1000 transform translate-x-12 bg-white opacity-10 rotate-12 group-hover:-translate-x-40 ease"></span>
+          <span class="relative text-sm">Generate Report</span>
+        </div>
       </form>
     </div>
   );
