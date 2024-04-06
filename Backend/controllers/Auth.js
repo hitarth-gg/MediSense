@@ -3,9 +3,6 @@ const User = require("../models/user");
 // const { options } = require("../routes/user");
 require("dotenv").config();
 
-
-
-
 //signup route handler
 exports.signup = async (req, res) => {
   try {
@@ -48,7 +45,7 @@ exports.login = async (req, res) => {
     //data fetch
     const { email, password } = req.body;
     //validation on email and password
-    if (!email || !password || email.length === 0 || password.length===0) {
+    if (!email || !password || email.length === 0 || password.length === 0) {
       return res.status(200).json({
         success: false,
         message: "Please provide email and password",
@@ -67,7 +64,7 @@ exports.login = async (req, res) => {
         return res.status(200).json({
           success: true,
           message: "User Logged in Successfully",
-          details: {user},
+          details: { user },
 
           // user details excluding password : LATER
         });
@@ -108,11 +105,11 @@ exports.form = async (req, res) => {
         message: "Name does not exist",
       });
     } else {
-        return res.status(200).json({
-          success: true,
-          message: "Details of the user retrieved successfully",
-          details: {user},
-        });
+      return res.status(200).json({
+        success: true,
+        message: "Details of the user retrieved successfully",
+        details: { user },
+      });
     }
   } catch (error) {
     console.error(error);
@@ -127,8 +124,18 @@ exports.form = async (req, res) => {
 exports.formpush = async (req, res) => {
   try {
     //get data
-    const { name, presentCase } = req.body;
-    
+    const {
+      name,
+      age,
+      sex,
+      pastHistory,
+      durationOfSymptopms,
+      physicsalExamination,
+      presentCase,
+      remarks,
+      status,
+    } = req.body;
+
     //check if user already exist
     // const existingUser = await Form.findOne({ name });
 
@@ -142,7 +149,14 @@ exports.formpush = async (req, res) => {
     //create entry for User
     const form = await Form.create({
       name,
+      age,
+      sex,
+      pastHistory,
+      durationOfSymptopms,
+      physicsalExamination,
       presentCase,
+      remarks,
+      status,
     });
 
     return res.status(200).json({
