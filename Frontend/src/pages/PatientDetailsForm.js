@@ -84,7 +84,7 @@ export default function PatientDetailsForm() {
             className="bg-transparent border border-gray-800 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
             required
           >
-            <option value="" disabled>Select Sex</option>
+            <option value="" disabled>Select Gender</option>
             <option value="male">Male</option>
             <option value="female">Female</option>
             <option value="other">Other</option>
@@ -144,9 +144,9 @@ export default function PatientDetailsForm() {
         <button
             onClick={handleSubmit}
             type="submit"
-            className="bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 text-white font-medium rounded-lg text-sm px-5 py-2.5"
+            className="bg-blue-600 transition-all ease-in-out hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-primary-300 text-white font-medium rounded-lg text-sm px-5 py-2.5"
         >
-          Submit
+          Generate Support
         </button>
       </form>
     </div>
