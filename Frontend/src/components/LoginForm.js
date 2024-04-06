@@ -10,7 +10,6 @@ import Button1 from "./Button1";
 export default function LoginForm() {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
-  const authContext = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -21,26 +20,21 @@ export default function LoginForm() {
       });
       // console.log(res.data);
       // console.log(res.data.message);
-      if (res.data.success) {
-        toast.success(res.data.message);
-        // authContext.setAuthenticated(true);
-        // authContext.printAccess();
-        console.log("res.data.details.user.role", res.data.details.user.role);
 
+      if (res.data.success) {
         if (res.data.details.user.role === "doctor") {
-          // window.location.href = "/list";
-          <NavLink to="/list" />;
+          window.location.href = "/doctor/dashboard";
         } else {
           window.location.href = "/facilitator/dashboard";
         }
       } else {
-        authContext.access();
         toast.error(res.data.message);
       }
-    } catch (err) {
-      console.log(err);
     }
+    catch (err) {
+      console.log(err);
   };
+};
 
   return (
     <>
@@ -112,10 +106,10 @@ export default function LoginForm() {
                 </div>
                 <div
                   onClick={handleSubmit}
-                  class="relative rounded min-w-32 px-5 py-2.5 overflow-hidden group bg-[#4876ee] hover:bg-gradient-to-r hover:from-blue-500 hover:to-blue-400 text-white hover:ring-2 hover:ring-offset-2 hover:ring-blue-400 transition-all ease-out duration-300 max-w-40 mx-auto"
+                  className="relative rounded min-w-32 px-5 py-2.5 overflow-hidden group bg-[#4876ee] hover:bg-gradient-to-r hover:from-blue-500 hover:to-blue-400 text-white hover:ring-2 hover:ring-offset-2 hover:ring-blue-400 transition-all ease-out duration-300 max-w-40 mx-auto"
                 >
-                  <span class="absolute right-0 w-8 h-32 -mt-12 transition-all duration-1000 transform translate-x-12 bg-white opacity-10 rotate-12 group-hover:-translate-x-40 ease"></span>
-                  <span class="relative">Sign In</span>
+                  <span className="absolute right-0 w-8 h-32 -mt-12 transition-all duration-1000 transform translate-x-12 bg-white opacity-10 rotate-12 group-hover:-translate-x-40 ease"></span>
+                  <span className="relative">Sign In</span>
                 </div>
                 <p className="text-sm font-light text-gray-700">
                   Don't have an account yet?{" "}

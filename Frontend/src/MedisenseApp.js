@@ -11,6 +11,7 @@ import DoctorList from "./pages/DoctorList";
 import AuthProvider, { useAuth } from "./security/AuthContext";
 // import SignupForm from "./components/SignupForm";
 import PatientDetailsForm from "./pages/PatientDetailsForm";
+import PatientTable from "./pages/PatientTable";
 
 export default function MedisenseApp() {
   function AuthenticatedRoute({ children }) {
@@ -45,6 +46,7 @@ export default function MedisenseApp() {
             {/* <Route path="/doctor/list" element={<DoctorList />} /> */}
             <Route path="/list" element={<DoctorList />} />
             <Route path="/doctor/dashboard" element={<DoctorDashboard />} />
+            <Route path="/form" element={<PatientTable />} />
             <Route path="*" element={<ErrorComponent />} />
           </Routes>
         </BrowserRouter>
