@@ -1,3 +1,4 @@
+const Form = require("../models/Form");
 const User = require("../models/user");
 // const { options } = require("../routes/user");
 require("dotenv").config();
@@ -82,6 +83,77 @@ exports.login = async (req, res) => {
     return res.status(200).json({
       success: false,
       message: "User cannot be logged in, please try again later",
+    });
+  }
+};
+
+/* ------------------------------------------------------ */
+
+exports.form = async (req, res) => {
+  try {
+    //data fetch
+    const { name } = req.body;
+    if (!name || name.length === 0) {
+      return res.status(200).json({
+        success: false,
+        message: "Incorrect Name",
+      });
+    }
+
+    //check for registered user
+    let user = await Form.findOne({ name });
+    if (!user) {
+      return res.status(200).json({
+        success: false,
+        message: "Name does not exist",
+      });
+    } else {
+        return res.status(200).json({
+          success: true,
+          message: "Details of the user retrieved successfully",
+          details: {user},
+        });
+    }
+  } catch (error) {
+    console.error(error);
+    return res.status(200).json({
+      success: false,
+      message: "Error From Form Schema, please try again later",
+    });
+  }
+};
+
+/* ------------------------------------------------------ */
+exports.formpush = async (req, res) => {
+  try {
+    //get data
+    const { name, presentCase } = req.body;
+    
+    //check if user already exist
+    // const existingUser = await Form.findOne({ name });
+
+    // if (existingUser) {
+    //   return res.status(200).json({
+    //     success: false,
+    //     message: "Form: Name is already in use",
+    //   });
+    // }
+
+    //create entry for User
+    const form = await Form.create({
+      name,
+      presentCase,
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: "Form Created Successfully",
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(200).json({
+      success: false,
+      message: "Form cannot be registered, please try again later",
     });
   }
 };
