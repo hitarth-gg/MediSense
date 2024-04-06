@@ -12,6 +12,13 @@ export default function ListRow({
   remarks,
   status,
 }) {
+  const truncateString = (str, maxLength) => {
+    if (str.length > maxLength) {
+      return str.substring(0, maxLength) + "...";
+    }
+    return str;
+  };
+
   const handleClick = () => {
     async function fetchData() {
       try {
@@ -28,7 +35,7 @@ export default function ListRow({
   };
 
   return (
-    <div className="animate-slidein opacity-0 card2 border-2 flex flex-row rounded-md border-[#dee8ef] justify-start items-center transition-all ease-in-out duration-150 my-5 p-5 hover:border-[#55a6f6] hover:bg-[#ebf5fe] text-sm text-[#4c5967] space-x-20">
+    <div className="animate-slidein opacity-0 card2 border-2 flex flex-row rounded-md border-[#dee8ef] justify-between items-center transition-all ease-in-out duration-150 my-5 p-5 hover:border-[#55a6f6] hover:bg-[#ebf5fe] text-sm text-[#4c5967] space-x-20">
       {/* --------------------------------- */}
 
       <div className="one">
@@ -49,7 +56,8 @@ export default function ListRow({
       <div className="one">
         <div className="flex flex-row space-x-2">
           <p className="font-semibold">Present Case:</p>
-          <p>{presentCase}</p>
+          <p>{truncateString(presentCase, 40)}</p>
+          
         </div>
         <div className="flex flex-row space-x-2">
           <p className="font-semibold">Past History:</p>
@@ -83,9 +91,9 @@ export default function ListRow({
       {/* --------------------------------- */}
       <div className="one">
         <div className="flex flex-row space-x-2">
-          <a
+          <div
             onClick={handleClick}
-            class="relative px-5 py-2 font-medium text-white transition duration-300 bg-blue-400 rounded-md hover:bg-blue-500 ease"
+            class="relative cursor-pointer px-5 py-2 font-medium text-white transition duration-300 bg-blue-400 rounded-md hover:bg-blue-500 ease"
           >
             <span class="absolute bottom-0 left-0 h-full -ml-2">
               <svg
@@ -116,7 +124,7 @@ export default function ListRow({
               </svg>
             </span>
             <span class="relative">Button Text</span>
-          </a>
+          </div>
         </div>
       </div>
       {/* --------------------------------- */}
