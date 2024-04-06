@@ -130,7 +130,7 @@ export default function PatientDetailsForm() {
 
           {/* http://127.0.0.1:5001/ */}
 
-          <Link className="nav-link" to={"http://127.0.0.1:5001"}>
+          <Link className="nav-link" to={"http://127.0.0.1:5000"}>
           <a
             className="relative rounded min-w-32 px-5 py-2.5 overflow-hidden group bg-[#4876ee] hover:bg-gradient-to-r hover:from-blue-500 hover:to-blue-400 text-white hover:ring-2 hover:ring-offset-2 hover:ring-blue-400 transition-all ease-out duration-300"
           >
