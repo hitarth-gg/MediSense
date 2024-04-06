@@ -15,12 +15,10 @@ export default function ListRow({
   const handleClick = () => {
     async function fetchData() {
       try {
-        const response = await axios.post(
-          `http://127.0.0.1:6067/api/data?name=${name}`,
-          {}
+        const response = await axios.get(
+          `http://127.0.0.1:6067/api/data?name=${name}`
         );
         console.log(response);
-        
       } catch (error) {
         console.error("Error fetching data:", error);
       }
