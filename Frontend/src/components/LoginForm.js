@@ -1,7 +1,42 @@
+
+import React, { useEffect, useState } from "react";
+// import { NavLink } from "react-router-dom";
+import axios from "axios";
+import {toast} from 'react-hot-toast';
+  
 import { NavLink } from "react-router-dom";
 import Button1 from "./Button1";
 
 export default function LoginForm() {
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
+
+  const handleSubmit = async (e) => {
+
+      e.preventDefault();
+      try {
+          const res = await axios.post("http://localhost:3000/login/", {
+              email,
+              password,
+          });
+          // console.log(res.data);
+          // console.log(res.data.message);
+          if(res.data.success){
+            toast.success(res.data.message);
+            if(res.data.details.user.role === "doctor"){
+              window.location.href = "/list";
+            }
+            else{
+              window.location.href = "/choose";
+            }
+          }else{
+            toast.error(res.data.message);
+          }
+      } catch (err) {
+          console.log(err);
+      }
+  };
+
   return (
     <>
       <section className="bg-transparent">
@@ -11,7 +46,7 @@ export default function LoginForm() {
               <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl">
                 Sign in to your account
               </h1>
-              <form className="space-y-4 md:space-y-6" action="#">
+              <div className="space-y-4 md:space-y-6">
                 <div>
                   <label
                     htmlFor="email"
@@ -21,6 +56,7 @@ export default function LoginForm() {
                   </label>
                   <input
                     type="email"
+                    onChange={(e) => setEmail(e.target.value)}
                     name="email"
                     id="email"
                     className="bg-transparent border border-gray-800 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
@@ -37,6 +73,7 @@ export default function LoginForm() {
                   </label>
                   <input
                     type="password"
+                    onChange={(e) => setPassword(e.target.value)}
                     name="password"
                     id="password"
                     placeholder="••••••••"
@@ -67,21 +104,26 @@ export default function LoginForm() {
                   >
                     Forgot password?
                   </a>
-                </div>
-                <div className="my-5">
-                  <Button1 text={"Sign In"} />
-                </div>
 
+                </div>
+                <button
+                //   type="submit"
+                //   onSubmit={ () => {console.log("asdasd")}}
+                onClick={handleSubmit}
+                  className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+                >
+                  Sign in
+                </button>
                 <p className="text-sm font-light text-gray-700">
-                  Don’t have an account yet?{" "}
-                  <NavLink
-                    to="/facilitator/signup"
-                    className="text-[#4876ee] font-bold hover:underline"
+                  Don't have an account yet?{" "}
+                  <a
+                    href="#"
+                    className="text-[#4876ee] font-bold hover:underline "
                   >
                     Sign up
-                  </NavLink>
+                  </a>
                 </p>
-              </form>
+              </div>
             </div>
           </div>
         </div>
