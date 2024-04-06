@@ -155,7 +155,7 @@ export default function ListRow({
                   ></path>
                 </svg>
               </span>
-              <span className="relative">Analysis</span>
+              <span className="relative">Button Text</span>
             </div>
           </div>
         </div>
