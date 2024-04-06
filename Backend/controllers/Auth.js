@@ -9,14 +9,14 @@ require("dotenv").config();
 exports.signup = async (req, res) => {
   try {
     //get data
-    const { name, email, password, role, location } = req.body;
+    const { name, email, password, role } = req.body;
     //check if user already exist
     const existingUser = await User.findOne({ email });
 
     if (existingUser) {
-      return res.status(400).json({
+      return res.status(200).json({
         success: false,
-        message: "User already Exists",
+        message: "Email is already in use",
       });
     }
 
@@ -26,7 +26,6 @@ exports.signup = async (req, res) => {
       email,
       password,
       role,
-      location,
     });
 
     return res.status(200).json({
@@ -48,7 +47,7 @@ exports.login = async (req, res) => {
     //data fetch
     const { email, password } = req.body;
     //validation on email and password
-    if (email.length === 0 || password.length===0) {
+    if (!email || !password || email.length === 0 || password.length===0) {
       return res.status(200).json({
         success: false,
         message: "Please provide email and password",

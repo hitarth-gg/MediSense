@@ -1,40 +1,46 @@
-
 import React, { useEffect, useState } from "react";
 // import { NavLink } from "react-router-dom";
+import { useAuth } from "../security/AuthContext";
 import axios from "axios";
-import {toast} from 'react-hot-toast';
-  
+import { toast } from "react-hot-toast";
+
 import { NavLink } from "react-router-dom";
 import Button1 from "./Button1";
 
 export default function LoginForm() {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
+  const authContext = useAuth();
 
   const handleSubmit = async (e) => {
-
-      e.preventDefault();
-      try {
-          const res = await axios.post("http://localhost:3000/login/", {
-              email,
-              password,
-          });
-          // console.log(res.data);
-          // console.log(res.data.message);
-          if(res.data.success){
-            toast.success(res.data.message);
-            if(res.data.details.user.role === "doctor"){
-              window.location.href = "/list";
-            }
-            else{
-              window.location.href = "/choose";
-            }
-          }else{
-            toast.error(res.data.message);
-          }
-      } catch (err) {
-          console.log(err);
+    e.preventDefault();
+    try {
+      const res = await axios.post("http://localhost:3000/login/", {
+        email,
+        password,
+      });
+      // console.log(res.data); 
+      // console.log(res.data.message);
+      if (res.data.success) {
+        toast.success(res.data.message);
+        // authContext.setAuthenticated(true);
+        // authContext.printAccess();
+        console.log("res.data.details.user.role", res.data.details.user.role);
+        
+        
+        if (res.data.details.user.role === "doctor") {
+          // window.location.href = "/list";
+          <NavLink to="/list" />;
+        } else {
+          window.location.href = "/choose";
+        }
+      } else {
+        authContext.access();
+        toast.error(res.data.message);
       }
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
@@ -104,16 +110,14 @@ export default function LoginForm() {
                   >
                     Forgot password?
                   </a>
-
                 </div>
-                <button
-                //   type="submit"
-                //   onSubmit={ () => {console.log("asdasd")}}
-                onClick={handleSubmit}
-                  className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+                <div
+                  onClick={handleSubmit}
+                  class="relative rounded min-w-32 px-5 py-2.5 overflow-hidden group bg-[#4876ee] hover:bg-gradient-to-r hover:from-blue-500 hover:to-blue-400 text-white hover:ring-2 hover:ring-offset-2 hover:ring-blue-400 transition-all ease-out duration-300 max-w-40 mx-auto"
                 >
-                  Sign in
-                </button>
+                  <span class="absolute right-0 w-8 h-32 -mt-12 transition-all duration-1000 transform translate-x-12 bg-white opacity-10 rotate-12 group-hover:-translate-x-40 ease"></span>
+                  <span class="relative">Sign In</span>
+                </div>
                 <p className="text-sm font-light text-gray-700">
                   Don't have an account yet?{" "}
                   <a

@@ -12,7 +12,14 @@ export default function AuthProvider({ children }) {
   const [number, setNumber] = useState(0);
   const [isAuthenticated, setAuthenticated] = useState(false);
 
-
+  function access() {
+    setAuthenticated(true);
+    console.log("accessed");
+    return true;
+  }
+  function printAccess() {
+    console.log("accessed: " + isAuthenticated);
+  }
 
 //   // Authentication Logic
 //   function login(username, password) {
@@ -32,7 +39,7 @@ export default function AuthProvider({ children }) {
   }
 
   return (
-    <AuthContext.Provider value={{ number, isAuthenticated }}>
+    <AuthContext.Provider value={{ number, isAuthenticated, setAuthenticated}}>
       {children}
     </AuthContext.Provider>
   );
