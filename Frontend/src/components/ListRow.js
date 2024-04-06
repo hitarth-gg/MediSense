@@ -22,43 +22,42 @@ export default function ListRow({
 
   const [isOpen, setIsOpen] = useState(false);
   // const [response, setResponse] = useState([]);
-  const handleClick = () => {
-    setIsOpen(!isOpen);
-  };
-  /* ------------------------------------------------------ */
-  // const [response, setResponse] = useState([]);
   // const handleClick = () => {
-  //   async function fetchData() {
-  //     try {
-  //       setResponse(
-  //         await axios.get(`http://127.0.0.1:5004/api/data?name=${name}`)
-  //       );
-  //       console.log(response);
-  //     } catch (error) {
-  //       console.error("Error fetching data:", error);
-  //     }
-  //   }
-  //   fetchData();
+  //   setIsOpen(!isOpen);
   // };
+  const [response, setResponse] = useState([]);
+  const handleClick = () => {
+    async function fetchData() {
+      try {
+        setResponse(
+          await axios.get(`http://127.0.0.1:5004/api/data?name=${name}`)
+        );
+        console.log(response);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    }
+    fetchData();
+  };
 
-  const response = [
-    ["Age", "28-year-old", "0.9972822070121765"],
-    ["History", "previously healthy", "0.9990726113319397"],
-    ["Sex", "man", "0.999725878238678"],
-    ["Clinical_event", "presented", "0.9996563196182251"],
-    ["Duration", "6-week", "0.9965295195579529"],
-    ["Sign_symptom", "palpitations", "0.9998781681060791"],
-    ["Coreference", "symptoms", "0.9989033937454224"],
-    ["Frequency", "2-3 times", "0.8818286061286926"],
-    ["Detailed_description", "up symptoms to 30 mi...", "0.9997408986091614"],
-    ["Lab_value", "grade 2/6", "0.9998769760131836"],
-    ["Detailed_description", "holosystolic", "0.9999765157699585"],
-    ["Biological_structure", "tricuspid", "0.9997997283935547"],
-    ["Sign_symptom", "regurgitation murmur", "0.9514440894126892"],
-    ["Biological_structure", "left sternal border", "0.9999346733093262"],
-    ["Diagnostic_procedure", "physical examination", "0.9998975992202759"],
-    ["Lab_value", "unremarkable", "0.958421528339386"],
-  ];
+  // const response = [
+  //   ["Age", "28-year-old", "0.9972822070121765"],
+  //   ["History", "previously healthy", "0.9990726113319397"],
+  //   ["Sex", "man", "0.999725878238678"],
+  //   ["Clinical_event", "presented", "0.9996563196182251"],
+  //   ["Duration", "6-week", "0.9965295195579529"],
+  //   ["Sign_symptom", "palpitations", "0.9998781681060791"],
+  //   ["Coreference", "symptoms", "0.9989033937454224"],
+  //   ["Frequency", "2-3 times", "0.8818286061286926"],
+  //   ["Detailed_description", "up symptoms to 30 mi...", "0.9997408986091614"],
+  //   ["Lab_value", "grade 2/6", "0.9998769760131836"],
+  //   ["Detailed_description", "holosystolic", "0.9999765157699585"],
+  //   ["Biological_structure", "tricuspid", "0.9997997283935547"],
+  //   ["Sign_symptom", "regurgitation murmur", "0.9514440894126892"],
+  //   ["Biological_structure", "left sternal border", "0.9999346733093262"],
+  //   ["Diagnostic_procedure", "physical examination", "0.9998975992202759"],
+  //   ["Lab_value", "unremarkable", "0.958421528339386"],
+  // ];
 
   return (
     <div
