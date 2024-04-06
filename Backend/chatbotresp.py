@@ -5,7 +5,7 @@ import requests
 app = Flask(__name__)
 
 # Set up OpenAI API credentials
-openai.api_key = ''
+openai.api_key = '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'
 
 
 def make_post_request(name):
