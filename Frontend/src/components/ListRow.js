@@ -1,7 +1,5 @@
 // export default function ListRow({name, age, sex, presentCase, pastHistory, durationOfSymptoms, physicalExamination, remarks, status}) {
-import axios from "axios";
 import Table from "./Table";
-import PatientTable from "../pages/PatientTable";
 import { useState } from "react";
 export default function ListRow({
   name,
