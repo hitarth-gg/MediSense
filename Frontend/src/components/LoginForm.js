@@ -10,7 +10,6 @@ import Button1 from "./Button1";
 export default function LoginForm() {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
-  const authContext = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -21,26 +20,21 @@ export default function LoginForm() {
       });
       // console.log(res.data);
       // console.log(res.data.message);
-      if (res.data.success) {
-        toast.success(res.data.message);
-        // authContext.setAuthenticated(true);
-        // authContext.printAccess();
-        console.log("res.data.details.user.role", res.data.details.user.role);
 
+      if (res.data.success) {
         if (res.data.details.user.role === "doctor") {
-          // window.location.href = "/list";
-          <NavLink to="/list" />;
+          window.location.href = "/doctor/dashboard";
         } else {
           window.location.href = "/facilitator/dashboard";
         }
       } else {
-        authContext.access();
         toast.error(res.data.message);
       }
-    } catch (err) {
-      console.log(err);
     }
+    catch (err) {
+      console.log(err);
   };
+};
 
   return (
     <>
