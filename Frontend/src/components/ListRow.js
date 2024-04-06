@@ -1,6 +1,7 @@
 // export default function ListRow({name, age, sex, presentCase, pastHistory, durationOfSymptoms, physicalExamination, remarks, status}) {
 import Table from "./Table";
 import { useState } from "react";
+import axios from "axios";
 export default function ListRow({
   name,
   age,
@@ -19,18 +20,18 @@ export default function ListRow({
     return str;
   };
 
-
-  const[isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   // const [response, setResponse] = useState([]);
   const handleClick = () => {
     setIsOpen(!isOpen);
   };
+  /* ------------------------------------------------------ */
   // const [response, setResponse] = useState([]);
   // const handleClick = () => {
   //   async function fetchData() {
   //     try {
-  //       let response = await axios.get(
-  //         `http://127.0.0.1:6067/api/data?name=${name}`
+  //       setResponse(
+  //         await axios.get(`http://127.0.0.1:5004/api/data?name=${name}`)
   //       );
   //       console.log(response);
   //     } catch (error) {
@@ -60,7 +61,13 @@ export default function ListRow({
   ];
 
   return (
-    <div className={ isOpen ? `card2 border-2 flex flex-col rounded-md border-[#dee8ef] justify-center items-center transition-all ease-in-out duration-150 my-1 p-1 hover:border-[#55a6f6] hover:bg-[#ebf5fe] text-sm text-[hsl(211,15%,35%)] space-x-20` : ""}>
+    <div
+      className={
+        isOpen
+          ? `card2 border-2 flex flex-col rounded-md border-[#dee8ef] justify-center items-center transition-all ease-in-out duration-150 my-1 p-1 hover:border-[#55a6f6] hover:bg-[#ebf5fe] text-sm text-[hsl(211,15%,35%)] space-x-20`
+          : ""
+      }
+    >
       <div className="animate-slidein opacity-0 card2 border-2 flex flex-row rounded-md border-[#dee8ef] justify-between items-center transition-all ease-in-out duration-150 my-5 p-5 hover:border-[#55a6f6] hover:bg-[#ebf5fe] text-sm text-[#4c5967] space-x-20">
         {/* --------------------------------- */}
 
@@ -155,11 +162,13 @@ export default function ListRow({
         </div>
         {/* --------------------------------- */}
       </div>
-      {isOpen ? <div>
-        {response.map((el) => {
-          return <Table el={el} />;
-        })}
-      </div> : null}
+      {isOpen ? (
+        <div>
+          {response.map((el) => {
+            return <Table el={el} />;
+          })}
+        </div>
+      ) : null}
     </div>
   );
 }

@@ -1,8 +1,9 @@
 from flask import Flask, render_template, request
 import openai
 import requests
-
+from flask_cors import CORS
 app = Flask(__name__)
+CORS(app)
 
 
 
