@@ -1,6 +1,6 @@
 import Card2 from "../components/Card2";
 
-function DoctorProfileHeader() {
+export default function Choose() {
   return (
     <div className="flex items-center justify-between bg-gray-800 text-white px-4 py-2">
       <div className="flex items-center">
