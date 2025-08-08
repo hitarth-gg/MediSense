@@ -1,5 +1,30 @@
 import Card2 from "../components/Card2";
 
+function DoctorProfileHeader() {
+  return (
+    <div className="flex items-center justify-between bg-gray-800 text-white px-4 py-2">
+      <div className="flex items-center">
+        <button>
+          <img
+            src="https://png.pngtree.com/png-vector/20191130/ourmid/pngtree-doctor-icon-circle-png-image_2055257.jpg"
+            alt="Doctor Avatar"
+            className="w-12 h-12 rounded-full mr-4"
+          />
+        </button>
+        <div>
+          <h1 className="text-xl font-semibold">Dr. John Doe</h1>
+          <p className="text-sm text-left">General</p>
+        </div>
+      </div>
+      <div>
+        <button className="bg-red-600 text-white rounded-md px-4 py-2 ml-4">
+          Logout
+        </button>
+      </div>
+    </div>
+  );
+}
+
 export default function Choose() {
   return (
     <>
