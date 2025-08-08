@@ -4,4 +4,4 @@ export default function Container1() {
             <img className="shadow-md rounded-lg border-[1px] hover:scale-105 transition-all ease-in-out" src="https://imgur.com/MZqmPXs.jpeg" alt="" />
         </div>
     );
-    }
+}

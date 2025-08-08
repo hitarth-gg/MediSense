@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CBIS-DDSM Breast Cancer Detection</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+            text-align: center;
+            max-width: 600px;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 0.5rem;
+            font-size: 2.2rem;
+            font-weight: 700;
+        }
+        
+        .model-info {
+            background: #f8f9ff;
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid #667eea;
+        }
+        
+        .model-info h3 {
+            color: #667eea;
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+        }
+        
+        .model-info p {
+            color: #666;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+        
+        .subtitle {
+            color: #666;
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+        
+        .upload-area {
+            border: 3px dashed #667eea;
+            border-radius: 15px;
+            padding: 3rem 2rem;
+            margin: 2rem 0;
+            background: linear-gradient(135deg, #f8f9ff 0%, #f0f2ff 100%);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .upload-area:hover {
+            border-color: #764ba2;
+            background: linear-gradient(135deg, #f0f2ff 0%, #e8ebff 100%);
+            transform: translateY(-2px);
+        }
+        
+        .upload-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #667eea;
+        }
+        
+        .upload-btn {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+        
+        .upload-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+        
+        .upload-btn:active {
+            transform: translateY(-1px);
+        }
+        
+        .file-input {
+            margin: 1.5rem 0;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            width: 100%;
+            max-width: 350px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+        
+        .file-input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .warning {
+            background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
+            border: 2px solid #ffc107;
+            color: #856404;
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin: 1.5rem 0;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+        
+        .medical-disclaimer {
+            background: linear-gradient(135deg, #f8d7da 0%, #f5c2c7 100%);
+            border: 2px solid #dc3545;
+            color: #721c24;
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin: 1.5rem 0;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        
+        .feature-card {
+            background: #f8f9ff;
+            padding: 1.5rem;
+            border-radius: 12px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .feature-card h4 {
+            color: #667eea;
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+        }
+        
+        .feature-card p {
+            color: #666;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+        
+        .result-area {
+            margin-top: 2rem;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .loading {
+            display: none;
+            color: #667eea;
+            font-size: 1.1rem;
+        }
+        
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            margin-right: 10px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .supported-formats {
+            font-size: 0.85rem;
+            color: #888;
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid #eee;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 1.5rem;
+                margin: 10px;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .upload-area {
+                padding: 2rem 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🏥 CBIS-DDSM Breast Cancer Detection</h1>
+        
+        <!-- <div class="model-info">
+            <h3>🧠 AI Model Information</h3>
+            <p>Using CBIS-DDSM CNN - A deep learning model trained on the Curated Breast Imaging Subset of DDSM dataset for mammographic cancer detection. Accuracy: 97.89%</p>
+        </div>
+        
+        <p class="subtitle">
+            Upload a mammographic image for AI-powered breast cancer screening.<br>
+            This system analyzes medical images to detect potential signs of malignancy.
+        </p>
+        
+        <div class="medical-disclaimer">
+            <strong>🚨 MEDICAL DISCLAIMER:</strong> This AI tool is for research and educational purposes only. It should NOT be used for clinical diagnosis or treatment decisions. Always consult qualified healthcare professionals for medical advice, diagnosis, and treatment.
+        </div>
+        
+        <div class="features">
+            <div class="feature-card">
+                <h4>🔬 Advanced CNN</h4>
+                <p>4-layer convolutional neural network with batch normalization and dropout for robust detection</p>
+            </div>
+            <div class="feature-card">
+                <h4>📊 High Accuracy</h4>
+                <p>Trained on CBIS-DDSM dataset with 97.89% accuracy on validation data</p>
+            </div>
+        </div> -->
+        
+        <form action="/predict" method="post" enctype="multipart/form-data" id="uploadForm">
+            <div class="upload-area">
+                <div class="upload-icon">🩻</div>
+                <p style="margin-bottom: 1rem; font-size: 1.1rem; color: #667eea; font-weight: 600;">Upload Mammographic Image</p>
+                <input type="file" name="file" class="file-input" accept=".png,.jpg,.jpeg,.bmp,.tiff,.dcm" required>
+                <br>
+                <button type="submit" class="upload-btn" id="analyzeBtn">
+                    🔍 Analyze Image
+                </button>
+            </div>
+        </form>
+        
+        <div class="result-area" id="resultArea">
+            <div class="loading" id="loadingIndicator">
+                <div class="spinner"></div>
+                Analyzing mammographic image... This may take a few moments.
+            </div>
+        </div>
+        
+        <!-- <div class="warning">
+            <strong>⚠️ Important Guidelines:</strong>
+            <ul style="text-align: left; margin-top: 10px; padding-left: 20px;">
+                <li>Upload clear, high-quality mammographic images</li>
+                <li>Supported formats: PNG, JPG, JPEG, BMP, TIFF, DICOM</li>
+                <li>Results are probabilistic and require medical validation</li>
+                <li>Not a replacement for professional radiological examination</li>
+            </ul>
+        </div> -->
+        
+        <div class="supported-formats">
+            <strong>Technical Details:</strong> Input size: 50x50 pixels | Model: CBIS-DDSM CNN | Training: 20 epochs on Tesla P100
+        </div>
+    </div>
+
+    <script>
+    const uploadForm = document.getElementById('uploadForm');
+    const analyzeBtn = document.getElementById('analyzeBtn');
+    const loadingIndicator = document.getElementById('loadingIndicator');
+    const resultArea = document.getElementById('resultArea');
+    const fileInput = document.querySelector('input[type="file"]');
+
+    uploadForm.addEventListener('submit', function(e) {
+        // 1. Prevent the default form submission (page reload)
+        e.preventDefault(); 
+        
+        if (!fileInput.files || fileInput.files.length === 0) {
+            alert('Please select a mammographic image file first.');
+            return;
+        }
+
+        // 2. Show the loading indicator and disable the button
+        loadingIndicator.style.display = 'flex'; // Use flex to center it
+        resultArea.innerHTML = ''; // Clear previous results
+        resultArea.appendChild(loadingIndicator);
+        
+        analyzeBtn.disabled = true;
+        analyzeBtn.innerHTML = '🔄 Analyzing...';
+        
+        // 3. Create a FormData object to send the file
+        const formData = new FormData(uploadForm);
+
+        // 4. Send the data to the server using the Fetch API
+        fetch('/predict', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.text()) // Get the response from Flask as text (since it's HTML)
+        .then(html => {
+            // 5. Success! Display the result from the server
+            resultArea.innerHTML = html;
+        })
+        .catch(error => {
+            // 6. Handle any errors that occurred during the fetch
+            console.error('Error:', error);
+            resultArea.innerHTML = `<div style="color: red;">❌ An error occurred. Please check the console and try again.</div>`;
+        })
+        .finally(() => {
+            // 7. Always re-enable the button when the process is finished
+            analyzeBtn.disabled = false;
+            analyzeBtn.innerHTML = '🔍 Analyze Image';
+            loadingIndicator.style.display = 'none'; // Hide loading indicator
+        });
+    });
+
+    // Your file change listener can remain the same
+    fileInput.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const fileSize = (file.size / 1024 / 1024).toFixed(2);
+            console.log(`Selected file: ${file.name} (${fileSize} MB)`);
+            
+            if (file.size > 50 * 1024 * 1024) { // 50MB limit
+                alert('File too large. Please select an image smaller than 50MB.');
+                e.target.value = '';
+            }
+        }
+    });
+</script>
+</body>
+</html>
