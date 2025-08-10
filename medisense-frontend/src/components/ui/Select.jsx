@@ -34,7 +34,7 @@ export function SelectTrigger({ children, ...props }) {
   return (
     <div
       {...props}
-      className={`flex items-center justify-between px-3 py-2 border border-gray-300 rounded-md cursor-pointer bg-white hover:border-gray-400 ${
+      className={`flex items-center justify-between px-3 py-2 border border-input rounded-md cursor-pointer bg-background hover:border-muted-foreground transition-colors ${
         props.className || ""
       }`}
       onClick={() => setIsOpen(!isOpen)}
@@ -59,7 +59,7 @@ export function SelectTrigger({ children, ...props }) {
 
 export function SelectValue({ placeholder }) {
   const { selectedValue } = useContext(SelectContext);
-  return <span className="text-gray-900">{selectedValue || placeholder}</span>;
+  return <span className="text-foreground">{selectedValue || placeholder}</span>;
 }
 
 export function SelectContent({ children }) {
@@ -68,7 +68,7 @@ export function SelectContent({ children }) {
   if (!isOpen) return null;
 
   return (
-    <div className="absolute top-full left-0 right-0 z-50 mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto">
+    <div className="absolute top-full left-0 right-0 z-50 mt-1 bg-background border border-border rounded-md shadow-lg max-h-60 overflow-auto">
       {children}
     </div>
   );
@@ -79,8 +79,8 @@ export function SelectItem({ value, children }) {
 
   return (
     <div
-      className={`px-3 py-2 cursor-pointer hover:bg-gray-100 ${
-        selectedValue === value ? "bg-blue-50 text-blue-600" : "text-gray-900"
+      className={`px-3 py-2 cursor-pointer hover:bg-muted transition-colors ${
+        selectedValue === value ? "bg-primary text-primary-foreground" : "text-foreground"
       }`}
       onClick={() => handleValueChange(value)}
       data-value={value}

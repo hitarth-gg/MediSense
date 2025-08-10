@@ -1,20 +1,28 @@
 import React from "react";
+import { clsx } from "clsx";
 
 export function Card({ children, className = "" }) {
-  return <div className={"rounded-lg bg-white shadow " + className}>{children}</div>;
+  return (
+    <div className={clsx("rounded-lg border bg-card text-card-foreground shadow-sm", className)}>
+      {children}
+    </div>
+  );
 }
 
 export function CardHeader({ children, className = "" }) {
-  return <div className={"px-6 py-6 " + className}>{children}</div>;
+  return <div className={clsx("flex flex-col space-y-1.5 p-6", className)}>{children}</div>;
 }
+
 export function CardTitle({ children, className = "" }) {
-  return <h3 className={"text-lg font-semibold " + className}>{children}</h3>;
+  return <h3 className={clsx("text-2xl font-semibold leading-none tracking-tight", className)}>{children}</h3>;
 }
+
 export function CardDescription({ children, className = "" }) {
-  return <p className={"text-sm text-muted-foreground " + className}>{children}</p>;
+  return <p className={clsx("text-sm text-muted-foreground", className)}>{children}</p>;
 }
+
 export function CardContent({ children, className = "" }) {
-  return <div className={"px-6 pb-6 " + className}>{children}</div>;
+  return <div className={clsx("p-6 pt-0", className)}>{children}</div>;
 }
 
 export default Card;

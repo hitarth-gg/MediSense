@@ -1,14 +1,16 @@
 import React from "react";
-import "../styles/global.css";
 import MouseMoveEffect from "../components/ui/MouseMoveEffect";
+import { ThemeProvider } from "../contexts/ThemeContext";
 
 export default function RootLayout({ children }) {
   return (
-    <div lang="en" className="light">
-      <div className="bg-background text-foreground antialiased">
-        <MouseMoveEffect />
-        {children}
+    <ThemeProvider>
+      <div lang="en" className="min-h-screen transition-colors duration-300">
+        <div className="bg-background text-foreground antialiased">
+          <MouseMoveEffect />
+          {children}
+        </div>
       </div>
-    </div>
+    </ThemeProvider>
   );
 }

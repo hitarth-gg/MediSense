@@ -26,19 +26,19 @@ export default function FacilitatorLogin() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-cyan-50 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-cyan-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 flex items-center justify-center p-4 transition-colors duration-300">
       <div className="w-full max-w-md">
         {/* Header */}
         <div className="text-center mb-8">
           <Link to="/" className="inline-flex items-center space-x-2 mb-6">
-            <Heart className="h-8 w-8 text-blue-600" />
-            <span className="font-bold text-2xl text-blue-600">MediSense</span>
+            <Heart className="h-8 w-8 text-blue-600 dark:text-blue-400" />
+            <span className="font-bold text-2xl text-blue-600 dark:text-blue-400">MediSense</span>
           </Link>
         </div>
 
-        <Card className="shadow-xl border-0">
+        <Card className="shadow-xl">
           <CardHeader className="text-center space-y-4">
-            <div className="mx-auto p-3 bg-blue-100 rounded-full">
+            <div className="mx-auto p-3 bg-blue-100 dark:bg-blue-900/50 rounded-full">
               <Users className="h-8 w-8 text-blue-600" />
             </div>
             <div>

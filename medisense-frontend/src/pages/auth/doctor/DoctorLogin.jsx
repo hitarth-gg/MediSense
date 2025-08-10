@@ -22,23 +22,23 @@ export default function DoctorLogin() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-cyan-50 via-white to-blue-50 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-cyan-50 via-white to-blue-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 flex items-center justify-center p-4 transition-colors duration-300">
       <div className="w-full max-w-md">
         {/* Header */}
         <div className="text-center mb-8">
           <Link to="/" className="inline-flex items-center space-x-2 mb-6">
-            <Heart className="h-8 w-8 text-blue-600" />
-            <span className="font-bold text-2xl text-blue-600">MediSense</span>
+            <Heart className="h-8 w-8 text-blue-600 dark:text-blue-400" />
+            <span className="font-bold text-2xl text-blue-600 dark:text-blue-400">MediSense</span>
           </Link>
         </div>
 
-        <Card className="shadow-xl border-0">
+        <Card className="shadow-xl">
           <CardHeader className="text-center space-y-4">
-            <div className="mx-auto p-3 bg-cyan-100 rounded-full">
-              <Stethoscope className="h-8 w-8 text-cyan-600" />
+            <div className="mx-auto p-3 bg-cyan-100 dark:bg-cyan-900/50 rounded-full">
+              <Stethoscope className="h-8 w-8 text-cyan-600 dark:text-cyan-400" />
             </div>
             <div>
-              <CardTitle className="text-2xl text-cyan-600">Login to your MediSense Doctor Account</CardTitle>
+              <CardTitle className="text-2xl text-cyan-600 dark:text-cyan-400">Login to your MediSense Doctor Account</CardTitle>
               <CardDescription className="mt-2">Access your medical dashboard to review patients</CardDescription>
             </div>
           </CardHeader>
@@ -64,12 +64,12 @@ export default function DoctorLogin() {
                 </div>
               </div>
 
-              <Button type="submit" className="w-full h-11 bg-cyan-600 hover:bg-cyan-700">
+              <Button type="submit" className="w-full h-11 bg-cyan-600 hover:bg-cyan-700 dark:bg-cyan-500 dark:hover:bg-cyan-600 text-white">
                 Login to Dashboard
               </Button>
 
               <div className="text-center">
-                <Link to="/auth/doctor/forgot-password" className="text-sm text-cyan-600 hover:underline">
+                <Link to="/auth/doctor/forgot-password" className="text-sm text-cyan-600 dark:text-cyan-400 hover:underline">
                   Forgot password?
                 </Link>
               </div>
@@ -78,7 +78,7 @@ export default function DoctorLogin() {
             <div className="mt-6 pt-6 border-t text-center">
               <p className="text-sm text-muted-foreground">
                 Don't have an account?{" "}
-                <Link to="/auth/doctor/register" className="text-cyan-600 hover:underline font-medium">
+                <Link to="/auth/doctor/register" className="text-cyan-600 dark:text-cyan-400 hover:underline font-medium">
                   Register as Doctor
                 </Link>
               </p>
@@ -89,7 +89,7 @@ export default function DoctorLogin() {
         <div className="text-center mt-6">
           <p className="text-sm text-muted-foreground">
             Are you a facilitator?{" "}
-            <Link to="/auth/facilitator/login" className="text-blue-600 hover:underline">
+            <Link to="/auth/facilitator/login" className="text-blue-600 dark:text-blue-400 hover:underline">
               Login here
             </Link>
           </p>

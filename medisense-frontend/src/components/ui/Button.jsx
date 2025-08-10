@@ -3,20 +3,23 @@ import { clsx } from "clsx";
 
 const buttonVariants = {
   default:
-    "bg-teal-600 text-white hover:bg-teal-700 transition-colors duration-200",
+    "bg-primary text-primary-foreground hover:bg-primary/90",
   destructive:
-    "bg-red-600 text-white hover:bg-red-700 transition-colors duration-200",
+    "bg-destructive text-destructive-foreground hover:bg-destructive/90",
   outline:
-    "border border-gray-300 bg-white hover:bg-gray-50 transition-colors duration-200",
+    "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
   secondary:
-    "bg-gray-100 text-gray-900 hover:bg-gray-200 transition-colors duration-200",
-  ghost: "text-gray-700 hover:bg-gray-100 transition-colors duration-200",
-  link: "text-teal-600 underline-offset-4 hover:underline",
-  blue: "bg-blue-600 text-white hover:bg-blue-700 transition-colors duration-200",
+    "bg-secondary text-secondary-foreground hover:bg-secondary/80",
+  ghost: 
+    "hover:bg-accent hover:text-accent-foreground",
+  link: 
+    "text-primary underline-offset-4 hover:underline",
+  blue: 
+    "bg-blue-600 text-white hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600",
   facilitator:
-    "bg-blue-600 text-white hover:bg-blue-700 transition-colors duration-200",
+    "bg-blue-600 text-white hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600",
   doctor:
-    "bg-teal-600 text-white hover:bg-teal-700 transition-colors duration-200",
+    "bg-teal-600 text-white hover:bg-teal-700 dark:bg-teal-500 dark:hover:bg-teal-600",
 };
 
 const buttonSizes = {
@@ -36,7 +39,7 @@ export function Button({
 }) {
   const Tag = asChild ? React.Fragment : "button";
   const baseClasses =
-    "inline-flex items-center justify-center rounded-md text-sm font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50";
+    "inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50";
 
   return (
     <Tag
