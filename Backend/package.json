@@ -19,7 +19,7 @@
         "express": "^4.19.2",
         "jsonwebtoken": "^9.0.2",
         "mongoose": "^8.3.0",
-        "nodemon": "^3.1.0",
+        "nodemon": "^3.1.10",
         "whatwg-url": "^14.0.0"
     }
 }

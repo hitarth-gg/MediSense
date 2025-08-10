@@ -7,6 +7,8 @@ import "@fontsource/inter/300.css"; // Specify weight
 import "@fontsource/inter/400.css"; // Specify weight
 import "@fontsource/inter/500.css"; // Specify weight
 import "@fontsource/inter/600.css"; // Specify weight
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
 
 import MedisenseApp from "./MedisenseApp";
 
