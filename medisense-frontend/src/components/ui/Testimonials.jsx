@@ -1,43 +1,21 @@
-import React from "react";
-import { motion } from "framer-motion";
-import { Quote, User, UserCheck } from "lucide-react";
+import { Quote, User, UserCheck } from "lucide-react"
 
 const testimonials = [
   {
-    quote:
-      "MediSense has revolutionized how we provide healthcare in remote villages. The AI-powered treatment advice helps me make better decisions for my patients, even when specialist consultation isn't immediately available.",
+    quote: "MediSense has revolutionized how we provide healthcare in remote villages. The AI-powered treatment advice helps me make better decisions for my patients, even when specialist consultation isn't immediately available.",
     author: "Dr. Priya Sharma",
     role: "Rural Health Specialist",
     location: "Rajasthan",
     icon: UserCheck,
   },
   {
-    quote:
-      "As a field facilitator, MediSense makes my job so much easier. The interface is simple to use, and I can quickly onboard patients and connect them with doctors. It's truly bridging the healthcare gap in our community.",
+    quote: "As a field facilitator, MediSense makes my job so much easier. The interface is simple to use, and I can quickly onboard patients and connect them with doctors. It's truly bridging the healthcare gap in our community.",
     author: "Ravi Kumar",
     role: "Community Health Facilitator",
     location: "Uttar Pradesh",
     icon: User,
   },
-];
-
-const containerVariants = {
-  hidden: { opacity: 0 },
-  show: {
-    opacity: 1,
-    transition: { staggerChildren: 0.12, delayChildren: 0.1 },
-  },
-};
-
-const cardVariants = {
-  hidden: { opacity: 0, y: 16, scale: 0.98 },
-  show: {
-    opacity: 1,
-    y: 0,
-    scale: 1,
-    transition: { type: "spring", stiffness: 140, damping: 18 },
-  },
-};
+]
 
 export default function Testimonials() {
   return (
@@ -89,34 +67,16 @@ export default function Testimonials() {
                     <p className="text-xs text-blue-600 dark:text-blue-400 font-medium">{testimonial.location}</p>
                   </div>
                 </div>
-                <div>
-                  <p className="font-semibold text-foreground">{testimonial.author}</p>
-                  <p className="text-sm text-muted-foreground">{testimonial.role}</p>
-                  <p className="text-xs text-muted-foreground">{testimonial.location}</p>
-                </div>
 
-                {/* Micro-CTA */}
-                <button
-                  type="button"
-                  className="mt-1 inline-flex w-max items-center gap-2 rounded-full border border-slate-200/80 bg-white/80 px-3 py-1.5 text-xs font-medium text-slate-700 shadow-sm transition-all hover:gap-3 hover:border-slate-300 hover:shadow"
-                  onClick={() => console.log(`Read more about ${t.author}`)}
-                >
-                  Read story
-                  <svg className="h-3.5 w-3.5" viewBox="0 0 20 20" fill="none">
-                    <path
-                      d="M7.5 4.5L13.5 10L7.5 15.5"
-                      stroke="currentColor"
-                      strokeWidth="1.6"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </button>
+                {/* Decorative element */}
+                <div className="absolute top-4 right-4 opacity-10 dark:opacity-5 group-hover:opacity-20 dark:group-hover:opacity-10 transition-opacity duration-300">
+                  <div className="w-20 h-20 border-2 border-blue-600 dark:border-blue-400 rounded-full" />
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </section>
-  );
+  )
 }
