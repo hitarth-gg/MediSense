@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   Card,
   CardContent,
@@ -18,11 +18,15 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { Stethoscope, Eye, EyeOff, Heart } from "lucide-react";
+import { Stethoscope, Eye, EyeOff, Heart, AlertCircle, Loader2, CheckCircle } from "lucide-react";
+import { useAuth } from "../../../hooks/useAuth";
 
 export default function DoctorRegister() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -39,6 +43,9 @@ export default function DoctorRegister() {
     confirmPassword: "",
   });
 
+  const { register } = useAuth();
+  const navigate = useNavigate();
+
   const specializations = [
     "General Medicine","Pediatrics","Cardiology","Dermatology","Orthopedics",
     "Gynecology","Neurology","Psychiatry","Ophthalmology","ENT",
@@ -53,9 +60,48 @@ export default function DoctorRegister() {
     "Telangana","Tripura","Uttar Pradesh","Uttarakhand","West Bengal"
   ];
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Doctor registration:", formData);
+    setError("");
+    setSuccess("");
+
+    // Validation
+    if (formData.password !== formData.confirmPassword) {
+      setError("Passwords do not match.");
+      return;
+    }
+
+    if (formData.password.length < 6) {
+      setError("Password must be at least 6 characters long.");
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      const result = await register(formData, 'doctor');
+      
+      if (result.success) {
+        setSuccess("Registration successful! You can now login with your credentials.");
+        // Clear form
+        setFormData({
+          fullName: "", email: "", phone: "", medicalLicense: "", specialization: "",
+          experience: "", hospital: "", state: "", city: "", availability: "",
+          languages: "", password: "", confirmPassword: ""
+        });
+        // Redirect to login after 2 seconds
+        setTimeout(() => {
+          navigate('/auth/doctor/login');
+        }, 2000);
+      } else {
+        setError(result.message || "Registration failed. Please try again.");
+      }
+    } catch (error) {
+      console.error("Registration error:", error);
+      setError("An unexpected error occurred. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -82,43 +128,93 @@ export default function DoctorRegister() {
 
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-6">
+              {error && (
+                <div className="flex items-center space-x-2 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-md">
+                  <AlertCircle className="h-4 w-4 text-red-600 dark:text-red-400" />
+                  <span className="text-sm text-red-700 dark:text-red-300">{error}</span>
+                </div>
+              )}
+
+              {success && (
+                <div className="flex items-center space-x-2 p-3 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-md">
+                  <CheckCircle className="h-4 w-4 text-green-600 dark:text-green-400" />
+                  <span className="text-sm text-green-700 dark:text-green-300">{success}</span>
+                </div>
+              )}
+
               {/* Personal Information */}
               <div className="grid md:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="fullName">Full Name *</Label>
-                  <Input id="fullName" placeholder="Dr. Enter your full name" value={formData.fullName}
-                    onChange={(e) => setFormData({ ...formData, fullName: e.target.value })} required />
+                  <Input 
+                    id="fullName" 
+                    placeholder="Dr. Enter your full name" 
+                    value={formData.fullName}
+                    onChange={(e) => setFormData({ ...formData, fullName: e.target.value })} 
+                    required 
+                    disabled={isSubmitting}
+                  />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="phone">Phone Number *</Label>
-                  <Input id="phone" type="tel" placeholder="+91 98765 43210" value={formData.phone}
-                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })} required />
+                  <Input 
+                    id="phone" 
+                    type="tel" 
+                    placeholder="+91 98765 43210" 
+                    value={formData.phone}
+                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })} 
+                    required 
+                    disabled={isSubmitting}
+                  />
                 </div>
               </div>
 
               <div className="space-y-2">
                 <Label htmlFor="email">Email Address *</Label>
-                <Input id="email" type="email" placeholder="doctor@example.com" value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })} required />
+                <Input 
+                  id="email" 
+                  type="email" 
+                  placeholder="doctor@example.com" 
+                  value={formData.email}
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })} 
+                  required 
+                  disabled={isSubmitting}
+                />
               </div>
 
               {/* Professional Information */}
               <div className="grid md:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="medicalLicense">Medical License Number *</Label>
-                  <Input id="medicalLicense" placeholder="Enter license number" value={formData.medicalLicense}
-                    onChange={(e) => setFormData({ ...formData, medicalLicense: e.target.value })} required />
+                  <Input 
+                    id="medicalLicense" 
+                    placeholder="Enter license number" 
+                    value={formData.medicalLicense}
+                    onChange={(e) => setFormData({ ...formData, medicalLicense: e.target.value })} 
+                    required 
+                    disabled={isSubmitting}
+                  />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="experience">Years of Experience *</Label>
-                  <Input id="experience" type="number" placeholder="e.g., 5" value={formData.experience}
-                    onChange={(e) => setFormData({ ...formData, experience: e.target.value })} required />
+                  <Input 
+                    id="experience" 
+                    type="number" 
+                    placeholder="e.g., 5" 
+                    value={formData.experience}
+                    onChange={(e) => setFormData({ ...formData, experience: e.target.value })} 
+                    required 
+                    disabled={isSubmitting}
+                  />
                 </div>
               </div>
 
               <div className="space-y-2">
                 <Label htmlFor="specialization">Specialization *</Label>
-                <Select onValueChange={(value) => setFormData({ ...formData, specialization: value })}>
+                <Select 
+                  onValueChange={(value) => setFormData({ ...formData, specialization: value })}
+                  disabled={isSubmitting}
+                >
                   <SelectTrigger>
                     <SelectValue placeholder="Select specialization" />
                   </SelectTrigger>
@@ -132,15 +228,24 @@ export default function DoctorRegister() {
 
               <div className="space-y-2">
                 <Label htmlFor="hospital">Current Hospital/Clinic *</Label>
-                <Input id="hospital" placeholder="Enter hospital/clinic name" value={formData.hospital}
-                  onChange={(e) => setFormData({ ...formData, hospital: e.target.value })} required />
+                <Input 
+                  id="hospital" 
+                  placeholder="Enter hospital/clinic name" 
+                  value={formData.hospital}
+                  onChange={(e) => setFormData({ ...formData, hospital: e.target.value })} 
+                  required 
+                  disabled={isSubmitting}
+                />
               </div>
 
               {/* Location Information */}
               <div className="grid md:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="state">State *</Label>
-                  <Select onValueChange={(value) => setFormData({ ...formData, state: value })}>
+                  <Select 
+                    onValueChange={(value) => setFormData({ ...formData, state: value })}
+                    disabled={isSubmitting}
+                  >
                     <SelectTrigger>
                       <SelectValue placeholder="Select state" />
                     </SelectTrigger>
@@ -154,21 +259,37 @@ export default function DoctorRegister() {
 
                 <div className="space-y-2">
                   <Label htmlFor="city">City *</Label>
-                  <Input id="city" placeholder="Enter city" value={formData.city}
-                    onChange={(e) => setFormData({ ...formData, city: e.target.value })} required />
+                  <Input 
+                    id="city" 
+                    placeholder="Enter city" 
+                    value={formData.city}
+                    onChange={(e) => setFormData({ ...formData, city: e.target.value })} 
+                    required 
+                    disabled={isSubmitting}
+                  />
                 </div>
               </div>
 
               <div className="grid md:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="availability">Preferred Consultation Hours</Label>
-                  <Input id="availability" placeholder="e.g., 9 AM - 5 PM" value={formData.availability}
-                    onChange={(e) => setFormData({ ...formData, availability: e.target.value })} />
+                  <Input 
+                    id="availability" 
+                    placeholder="e.g., 9 AM - 5 PM" 
+                    value={formData.availability}
+                    onChange={(e) => setFormData({ ...formData, availability: e.target.value })} 
+                    disabled={isSubmitting}
+                  />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="languages">Languages Spoken</Label>
-                  <Input id="languages" placeholder="e.g., Hindi, English, Tamil" value={formData.languages}
-                    onChange={(e) => setFormData({ ...formData, languages: e.target.value })} />
+                  <Input 
+                    id="languages" 
+                    placeholder="e.g., Hindi, English, Tamil" 
+                    value={formData.languages}
+                    onChange={(e) => setFormData({ ...formData, languages: e.target.value })} 
+                    disabled={isSubmitting}
+                  />
                 </div>
               </div>
 
@@ -177,12 +298,23 @@ export default function DoctorRegister() {
                 <div className="space-y-2">
                   <Label htmlFor="password">Password *</Label>
                   <div className="relative">
-                    <Input id="password" type={showPassword ? "text" : "password"} placeholder="Create password"
-                      value={formData.password} onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                      required className="pr-10" />
-                    <button type="button" onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
-                      aria-label={showPassword ? "Hide password" : "Show password"}>
+                    <Input 
+                      id="password" 
+                      type={showPassword ? "text" : "password"} 
+                      placeholder="Create password"
+                      value={formData.password} 
+                      onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                      required 
+                      className="pr-10" 
+                      disabled={isSubmitting}
+                    />
+                    <button 
+                      type="button" 
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground disabled:opacity-50"
+                      aria-label={showPassword ? "Hide password" : "Show password"}
+                      disabled={isSubmitting}
+                    >
                       {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                     </button>
                   </div>
@@ -191,20 +323,42 @@ export default function DoctorRegister() {
                 <div className="space-y-2">
                   <Label htmlFor="confirmPassword">Confirm Password *</Label>
                   <div className="relative">
-                    <Input id="confirmPassword" type={showConfirmPassword ? "text" : "password"} placeholder="Confirm password"
-                      value={formData.confirmPassword} onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
-                      required className="pr-10" />
-                    <button type="button" onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
-                      aria-label={showConfirmPassword ? "Hide confirm password" : "Show confirm password"}>
+                    <Input 
+                      id="confirmPassword" 
+                      type={showConfirmPassword ? "text" : "password"} 
+                      placeholder="Confirm password"
+                      value={formData.confirmPassword} 
+                      onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
+                      required 
+                      className="pr-10" 
+                      disabled={isSubmitting}
+                    />
+                    <button 
+                      type="button" 
+                      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground disabled:opacity-50"
+                      aria-label={showConfirmPassword ? "Hide confirm password" : "Show confirm password"}
+                      disabled={isSubmitting}
+                    >
                       {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                     </button>
                   </div>
                 </div>
               </div>
 
-              <Button type="submit" className="w-full h-11 bg-cyan-600 hover:bg-cyan-700">
-                Register as Doctor
+              <Button 
+                type="submit" 
+                className="w-full h-11 bg-cyan-600 hover:bg-cyan-700"
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? (
+                  <>
+                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                    Registering...
+                  </>
+                ) : (
+                  "Register as Doctor"
+                )}
               </Button>
             </form>
 

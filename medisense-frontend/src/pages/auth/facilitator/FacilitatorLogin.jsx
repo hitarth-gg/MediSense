@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   Card,
   CardContent,
@@ -10,7 +10,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Users, Eye, EyeOff, Heart } from "lucide-react";
+import { Users, Eye, EyeOff, Heart, AlertCircle, Loader2 } from "lucide-react";
+import { useAuth } from "../../../hooks/useAuth";
 
 export default function FacilitatorLogin() {
   const [showPassword, setShowPassword] = useState(false);
@@ -18,11 +19,38 @@ export default function FacilitatorLogin() {
     email: "",
     password: "",
   });
+  const [error, setError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e) => {
+  const { login } = useAuth();
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // TODO: call auth service
-    console.log("Facilitator login:", formData);
+    setError("");
+    setIsSubmitting(true);
+
+    try {
+      const result = await login(formData.email, formData.password);
+      
+      if (result.success) {
+        // Check if user is actually a facilitator
+        if (result.user.role !== 'facilitator') {
+          setError("This account is not registered as a facilitator. Please use the correct login page.");
+          return;
+        }
+        
+        // Redirect to facilitator dashboard
+        navigate('/facilitator/dashboard', { replace: true });
+      } else {
+        setError(result.message || "Login failed. Please try again.");
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+      setError("An unexpected error occurred. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -53,6 +81,13 @@ export default function FacilitatorLogin() {
 
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-6">
+              {error && (
+                <div className="flex items-center space-x-2 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-md">
+                  <AlertCircle className="h-4 w-4 text-red-600 dark:text-red-400" />
+                  <span className="text-sm text-red-700 dark:text-red-300">{error}</span>
+                </div>
+              )}
+
               <div className="space-y-2">
                 <Label htmlFor="email">Email Address</Label>
                 <Input
@@ -65,6 +100,7 @@ export default function FacilitatorLogin() {
                   }
                   required
                   className="h-11"
+                  disabled={isSubmitting}
                 />
               </div>
 
@@ -81,12 +117,14 @@ export default function FacilitatorLogin() {
                     }
                     required
                     className="h-11 pr-10"
+                    disabled={isSubmitting}
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground disabled:opacity-50"
                     aria-label={showPassword ? "Hide password" : "Show password"}
+                    disabled={isSubmitting}
                   >
                     {showPassword ? (
                       <EyeOff className="h-4 w-4" />
@@ -97,8 +135,19 @@ export default function FacilitatorLogin() {
                 </div>
               </div>
 
-              <Button type="submit" className="w-full h-11 bg-blue-600 hover:bg-blue-700">
-                Login to Dashboard
+              <Button 
+                type="submit" 
+                className="w-full h-11 bg-blue-600 hover:bg-blue-700"
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? (
+                  <>
+                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                    Logging in...
+                  </>
+                ) : (
+                  "Login to Dashboard"
+                )}
               </Button>
 
               <div className="text-center">
