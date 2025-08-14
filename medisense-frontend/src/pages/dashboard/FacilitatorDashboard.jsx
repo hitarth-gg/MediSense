@@ -1,258 +1,408 @@
-import React from "react";
-import { useAuth } from "../../hooks/useAuth";
-import Navbar from "../../components/ui/Navbar";
-import { 
-  Card, 
-  CardContent, 
-  CardDescription, 
-  CardHeader, 
-  CardTitle 
-} from "../../components/ui/card";
-import { Button } from "../../components/ui/Button";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import PatientQueue from "../../components/dashboard/facilitator/PatientQueue";
+import PatientDetail from "../../components/dashboard/facilitator/PatientDetail";
+import DoctorResponsePanel from "../../components/dashboard/facilitator/DoctorResponsePanel";
+import NewPatientForm from "../../components/dashboard/facilitator/NewPatientForm";
+import PatientHistory from "../../components/dashboard/facilitator/PatientHistory";
+import FacilitatorProfile from "../../components/dashboard/facilitator/FacilitatorProfile";
+import ActiveCasesOverview from "../../components/dashboard/facilitator/ActiveCasesOverview";
+import NotificationSystem from "../../components/dashboard/facilitator/NotificationSystem";
 import {
+  Heart,
   Users,
   FileText,
-  MapPin,
-  Clock,
-  Activity,
-  Bell,
+  History,
+  User,
+  ChevronDown,
+  LogOut,
   Settings,
-  Plus,
-  Search,
-  CheckCircle,
-  AlertCircle
+  Bell,
 } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export default function FacilitatorDashboard() {
-  const { user } = useAuth();
+  const navigate = useNavigate();
+  const [patients, setPatients] = useState([]);
+  const [doctors, setDoctors] = useState([]);
+  const [selectedPatient, setSelectedPatient] = useState(null);
+  const [activeTab, setActiveTab] = useState("dashboard");
+  const [showProfileMenu, setShowProfileMenu] = useState(false);
 
-  const stats = [
-    { title: "Patients Registered", value: "89", icon: Users, color: "bg-blue-500" },
-    { title: "Cases Submitted", value: "156", icon: FileText, color: "bg-green-500" },
-    { title: "Pending Reviews", value: "12", icon: Clock, color: "bg-orange-500" },
-    { title: "This Month", value: "23", icon: Activity, color: "bg-purple-500" },
-  ];
+  useEffect(() => {
+    // Mock data for now - replace with actual API calls later
+    const mockData = {
+      patients: [
+        {
+          id: "P001",
+          name: "Rajesh Kumar",
+          age: 45,
+          gender: "Male",
+          phone: "+91 98765 43210",
+          village: "Rampur",
+          district: "Sitapur",
+          state: "Uttar Pradesh",
+          symptoms: "Persistent cough, fever for 3 days, chest pain",
+          medicalHistory: "Diabetes, Hypertension",
+          images: [
+            "/placeholder.svg?height=200&width=200",
+            "/placeholder.svg?height=200&width=200",
+          ],
+          status: "awaiting_doctor",
+          priority: "High",
+          createdAt: "2024-08-09T10:30:00Z",
+          aiSummary:
+            "45-year-old male presenting with respiratory symptoms including persistent cough, fever, and chest pain. Medical history significant for diabetes and hypertension. Symptoms suggest possible respiratory infection or pneumonia. Recommend immediate medical evaluation and chest imaging.",
+          assignedDoctor: {
+            id: "D001",
+            name: "Dr. Priya Sharma",
+            specialty: "General Medicine",
+            avatar: "/placeholder.svg?height=40&width=40",
+          },
+          doctorResponse: {
+            diagnosis: "Upper Respiratory Tract Infection",
+            prescription: [
+              {
+                medicine: "Azithromycin 500mg",
+                dosage: "Once daily",
+                duration: "5 days",
+              },
+              {
+                medicine: "Paracetamol 650mg",
+                dosage: "As needed for fever",
+                duration: "5 days",
+              },
+            ],
+            notes:
+              "Rest, adequate hydration, and follow up if symptoms persist beyond 5 days.",
+            nextConsultation: "2024-08-14T10:30:00Z",
+          },
+        },
+        {
+          id: "P002",
+          name: "Sunita Devi",
+          age: 32,
+          gender: "Female",
+          phone: "+91 87654 32109",
+          village: "Bharatpur",
+          district: "Varanasi",
+          state: "Uttar Pradesh",
+          symptoms: "Severe headache, nausea, dizziness for 2 days",
+          medicalHistory: "No significant history",
+          images: [],
+          status: "video_scheduled",
+          priority: "Medium",
+          createdAt: "2024-08-09T14:15:00Z",
+          aiSummary:
+            "32-year-old female presenting with neurological symptoms including severe headache, nausea, and dizziness. No significant medical history. Symptoms require evaluation for possible migraine, tension headache, or other neurological conditions.",
+          assignedDoctor: {
+            id: "D002",
+            name: "Dr. Amit Verma",
+            specialty: "Neurology",
+            avatar: "/placeholder.svg?height=40&width=40",
+          },
+          scheduledCall: "2024-08-10T16:00:00Z",
+        },
+        {
+          id: "P003",
+          name: "Mohan Singh",
+          age: 58,
+          gender: "Male",
+          phone: "+91 76543 21098",
+          village: "Kushalnagar",
+          district: "Kanpur",
+          state: "Uttar Pradesh",
+          symptoms: "Joint pain, swelling in knees, difficulty walking",
+          medicalHistory: "Arthritis, High blood pressure",
+          images: ["/placeholder.svg?height=200&width=200"],
+          status: "completed",
+          priority: "Low",
+          createdAt: "2024-08-08T09:45:00Z",
+          aiSummary:
+            "58-year-old male with known arthritis presenting with increased joint pain and swelling in knees. History of hypertension. Symptoms consistent with arthritis flare-up.",
+          assignedDoctor: {
+            id: "D003",
+            name: "Dr. Kavita Nair",
+            specialty: "Orthopedics",
+            avatar: "/placeholder.svg?height=40&width=40",
+          },
+          doctorResponse: {
+            diagnosis: "Osteoarthritis Exacerbation",
+            prescription: [
+              {
+                medicine: "Ibuprofen 400mg",
+                dosage: "Twice daily after meals",
+                duration: "7 days",
+              },
+              {
+                medicine: "Calcium + Vitamin D3",
+                dosage: "Once daily",
+                duration: "30 days",
+              },
+            ],
+            notes:
+              "Apply warm compress, gentle exercises, avoid prolonged standing.",
+            followUp: "Monthly check-up recommended",
+          },
+        },
+      ],
+      doctors: [
+        {
+          id: "D001",
+          name: "Dr. Priya Sharma",
+          specialty: "General Medicine",
+          avatar: "/placeholder.svg?height=40&width=40",
+          status: "available",
+          patients: 12,
+        },
+        {
+          id: "D002",
+          name: "Dr. Amit Verma",
+          specialty: "Neurology",
+          avatar: "/placeholder.svg?height=40&width=40",
+          status: "busy",
+          patients: 8,
+        },
+        {
+          id: "D003",
+          name: "Dr. Kavita Nair",
+          specialty: "Orthopedics",
+          avatar: "/placeholder.svg?height=40&width=40",
+          status: "available",
+          patients: 15,
+        },
+      ],
+    };
 
-  const recentCases = [
-    { 
-      patient: "Ramesh Yadav", 
-      age: 52, 
-      symptoms: "Persistent cough, fever", 
-      status: "Under Review", 
-      submitted: "2 hours ago",
-      priority: "High"
-    },
-    { 
-      patient: "Sunita Kumari", 
-      age: 34, 
-      symptoms: "Abdominal pain, nausea", 
-      status: "Reviewed", 
-      submitted: "5 hours ago",
-      priority: "Medium"
-    },
-    { 
-      patient: "Ravi Kumar", 
-      age: 28, 
-      symptoms: "Skin rash, itching", 
-      status: "Pending", 
-      submitted: "1 day ago",
-      priority: "Low"
-    },
-  ];
+    setPatients(mockData.patients);
+    setDoctors(mockData.doctors);
+  }, []);
 
-  const todayTasks = [
-    { task: "Follow up with Kamla Devi for diabetes check", time: "10:00 AM", completed: true },
-    { task: "Submit case for Rajesh Singh - chest pain", time: "11:30 AM", completed: false },
-    { task: "Community health awareness session", time: "2:00 PM", completed: false },
-    { task: "Visit Anganwadi center for vaccination drive", time: "4:00 PM", completed: false },
-  ];
-
-  const getStatusColor = (status) => {
-    switch (status.toLowerCase()) {
-      case 'reviewed': return 'text-green-600 bg-green-50 dark:text-green-400 dark:bg-green-900/20';
-      case 'under review': return 'text-blue-600 bg-blue-50 dark:text-blue-400 dark:bg-blue-900/20';
-      case 'pending': return 'text-orange-600 bg-orange-50 dark:text-orange-400 dark:bg-orange-900/20';
-      default: return 'text-gray-600 bg-gray-50 dark:text-gray-400 dark:bg-gray-900/20';
-    }
+  const handleLogout = () => {
+    // Clear auth tokens and redirect
+    localStorage.removeItem("authToken");
+    navigate("/auth/facilitator/login");
   };
 
-  const getPriorityColor = (priority) => {
-    switch (priority.toLowerCase()) {
-      case 'high': return 'text-red-600 bg-red-50 dark:text-red-400 dark:bg-red-900/20';
-      case 'medium': return 'text-orange-600 bg-orange-50 dark:text-orange-400 dark:bg-orange-900/20';
-      case 'low': return 'text-green-600 bg-green-50 dark:text-green-400 dark:bg-green-900/20';
-      default: return 'text-gray-600 bg-gray-50 dark:text-gray-400 dark:bg-gray-900/20';
+  const handleAddPatient = (newPatient) => {
+    const patient = {
+      ...newPatient,
+      id: `P${String(patients.length + 1).padStart(3, "0")}`,
+      status: "awaiting_doctor",
+      createdAt: new Date().toISOString(),
+    };
+    setPatients([patient, ...patients]);
+    setActiveTab("dashboard");
+  };
+
+  const handlePatientUpdate = (updatedPatient) => {
+    setPatients(
+      patients.map((p) => (p.id === updatedPatient.id ? updatedPatient : p))
+    );
+    setSelectedPatient(updatedPatient);
+  };
+
+  const renderActiveTab = () => {
+    switch (activeTab) {
+      case "dashboard":
+        return (
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 h-full">
+            <div className="lg:col-span-1">
+              <PatientQueue
+                patients={patients}
+                selectedPatient={selectedPatient}
+                onPatientSelect={setSelectedPatient}
+              />
+            </div>
+            <div className="lg:col-span-2">
+              {selectedPatient ? (
+                <div className="grid grid-rows-2 gap-6 h-full">
+                  <PatientDetail
+                    patient={selectedPatient}
+                    onUpdate={handlePatientUpdate}
+                  />
+                  <DoctorResponsePanel
+                    patient={selectedPatient}
+                    doctors={doctors}
+                  />
+                </div>
+              ) : (
+                <div className="flex items-center justify-center h-full bg-gray-50 rounded-lg">
+                  <div className="text-center">
+                    <Users className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+                    <h3 className="text-lg font-medium text-gray-900 mb-2">
+                      Select a Patient
+                    </h3>
+                    <p className="text-gray-500">
+                      Choose a patient from the queue to view details
+                    </p>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        );
+      case "new-patient":
+        return (
+          <NewPatientForm
+            onSubmit={handleAddPatient}
+            onCancel={() => setActiveTab("dashboard")}
+          />
+        );
+      case "history":
+        return (
+          <PatientHistory
+            patients={patients.filter((p) => p.status === "completed")}
+          />
+        );
+      case "overview":
+        return <ActiveCasesOverview patients={patients} doctors={doctors} />;
+      case "profile":
+        return <FacilitatorProfile />;
+      default:
+        return null;
     }
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
-      <Navbar />
-      
-      <main className="container mx-auto px-4 py-8 max-w-7xl">
-        {/* Header */}
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
-              Welcome, {user?.name}
-            </h1>
-            <p className="text-gray-600 dark:text-gray-400 mt-1 flex items-center">
-              <MapPin className="h-4 w-4 mr-1" />
-              Community Health Facilitator • Serving rural healthcare
-            </p>
-          </div>
-          <div className="flex items-center space-x-4">
-            <Button variant="outline" size="sm">
-              <Bell className="h-4 w-4 mr-2" />
-              Notifications
-            </Button>
-            <Button variant="outline" size="sm">
-              <Settings className="h-4 w-4 mr-2" />
-              Settings
-            </Button>
-          </div>
-        </div>
-
-        {/* Stats Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          {stats.map((stat, index) => (
-            <Card key={index} className="relative overflow-hidden">
-              <CardContent className="p-6">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm text-muted-foreground">{stat.title}</p>
-                    <p className="text-3xl font-bold">{stat.value}</p>
-                  </div>
-                  <div className={`${stat.color} p-3 rounded-full`}>
-                    <stat.icon className="h-6 w-6 text-white" />
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Recent Cases */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center">
-                <FileText className="h-5 w-5 mr-2 text-blue-600" />
-                Recent Cases
-              </CardTitle>
-              <CardDescription>Cases you've submitted for medical review</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {recentCases.map((case_, index) => (
-                  <div key={index} className="p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
-                    <div className="flex items-center justify-between mb-2">
-                      <h4 className="font-semibold text-gray-900 dark:text-white">{case_.patient}</h4>
-                      <span className="text-xs text-gray-500 dark:text-gray-400">{case_.submitted}</span>
-                    </div>
-                    <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
-                      Age: {case_.age} • Symptoms: {case_.symptoms}
-                    </p>
-                    <div className="flex items-center justify-between">
-                      <span className={`inline-flex px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(case_.status)}`}>
-                        {case_.status}
-                      </span>
-                      <span className={`inline-flex px-2 py-1 rounded-full text-xs font-medium ${getPriorityColor(case_.priority)}`}>
-                        {case_.priority}
-                      </span>
-                    </div>
-                    <Button size="sm" variant="outline" className="w-full mt-3">
-                      View Details
-                    </Button>
-                  </div>
-                ))}
-              </div>
-              <Button className="w-full mt-4" variant="outline">
-                View All Cases
-              </Button>
-            </CardContent>
-          </Card>
-
-          {/* Today's Tasks */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center">
-                <CheckCircle className="h-5 w-5 mr-2 text-green-600" />
-                Today's Tasks
-              </CardTitle>
-              <CardDescription>Your scheduled activities and follow-ups</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                {todayTasks.map((task, index) => (
-                  <div key={index} className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-700 rounded-lg">
-                    <div className={`flex-shrink-0 ${task.completed ? 'text-green-500' : 'text-gray-400'}`}>
-                      {task.completed ? (
-                        <CheckCircle className="h-5 w-5" />
-                      ) : (
-                        <AlertCircle className="h-5 w-5" />
-                      )}
-                    </div>
-                    <div className="flex-1">
-                      <p className={`text-sm ${task.completed ? 'line-through text-gray-500' : 'text-gray-900 dark:text-white'}`}>
-                        {task.task}
-                      </p>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">{task.time}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-              <Button className="w-full mt-4" variant="outline">
-                View All Tasks
-              </Button>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Quick Actions */}
-        <Card className="mt-8">
-          <CardHeader>
-            <CardTitle className="flex items-center">
-              <Activity className="h-5 w-5 mr-2 text-purple-600" />
-              Quick Actions
-            </CardTitle>
-            <CardDescription>Common tasks and quick access tools</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
-              <Button className="h-20 flex flex-col items-center justify-center space-y-2 bg-blue-600 hover:bg-blue-700 text-white">
-                <Plus className="h-6 w-6" />
-                <span className="text-sm">Register New Patient</span>
-              </Button>
-              <Button className="h-20 flex flex-col items-center justify-center space-y-2" variant="outline">
-                <FileText className="h-6 w-6" />
-                <span className="text-sm">Submit Case</span>
-              </Button>
-              <Button className="h-20 flex flex-col items-center justify-center space-y-2" variant="outline">
-                <Search className="h-6 w-6" />
-                <span className="text-sm">Search Patients</span>
-              </Button>
-              <Button className="h-20 flex flex-col items-center justify-center space-y-2" variant="outline">
-                <MapPin className="h-6 w-6" />
-                <span className="text-sm">Community Map</span>
-              </Button>
+    <div className="min-h-screen bg-gray-50">
+      {/* Header */}
+      <header className="bg-white border-b border-gray-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-16">
+            {/* Logo */}
+            <div className="flex items-center space-x-4">
+              <Link to="/" className="flex items-center space-x-2">
+                <Heart className="h-8 w-8 text-blue-600" />
+                <span className="font-bold text-xl text-blue-600">
+                  MediSense
+                </span>
+              </Link>
+              <div className="text-gray-400">|</div>
+              <span className="text-gray-600 font-medium">
+                Facilitator Dashboard
+              </span>
             </div>
-          </CardContent>
-        </Card>
 
-        {/* Health Tips Card */}
-        <Card className="mt-8 bg-gradient-to-r from-green-50 to-blue-50 dark:from-green-900/20 dark:to-blue-900/20">
-          <CardHeader>
-            <CardTitle className="text-green-700 dark:text-green-300">Community Health Tip of the Day</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-green-600 dark:text-green-400">
-              Encourage regular handwashing with soap for at least 20 seconds to prevent the spread of infections. 
-              This simple practice can reduce respiratory infections by up to 16% and diarrheal diseases by up to 23%.
-            </p>
-          </CardContent>
-        </Card>
+            {/* Right side */}
+            <div className="flex items-center space-x-4">
+              {/* Notification Bell */}
+              <div className="relative">
+                <Bell className="h-6 w-6 text-gray-500 hover:text-gray-700 cursor-pointer" />
+                <span className="absolute -top-1 -right-1 h-4 w-4 bg-red-500 text-white rounded-full text-xs flex items-center justify-center">
+                  1
+                </span>
+              </div>
+
+              {/* User Profile */}
+              <div className="flex items-center space-x-3">
+                <div className="text-right">
+                  <p className="text-sm font-medium text-gray-900">
+                    Ravi Kumar
+                  </p>
+                  <p className="text-xs text-gray-500">Facilitator • F001</p>
+                </div>
+                <div className="relative">
+                  <button
+                    onClick={() => setShowProfileMenu(!showProfileMenu)}
+                    className="flex items-center space-x-2 p-1 rounded-full hover:bg-gray-100"
+                  >
+                    <div className="h-8 w-8 bg-blue-100 rounded-full flex items-center justify-center">
+                      <User className="h-5 w-5 text-blue-600" />
+                    </div>
+                    <ChevronDown className="h-4 w-4 text-gray-500" />
+                  </button>
+
+                  {showProfileMenu && (
+                    <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 border">
+                      <button
+                        onClick={() => {
+                          setActiveTab("profile");
+                          setShowProfileMenu(false);
+                        }}
+                        className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+                      >
+                        <Settings className="h-4 w-4 mr-2" />
+                        Profile Settings
+                      </button>
+                      <button
+                        onClick={handleLogout}
+                        className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+                      >
+                        <LogOut className="h-4 w-4 mr-2" />
+                        Logout
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      {/* Navigation Tabs */}
+      <div className="bg-white border-b border-gray-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <nav className="flex space-x-8">
+            <button
+              onClick={() => setActiveTab("dashboard")}
+              className={`py-4 px-1 border-b-2 font-medium text-sm flex items-center space-x-2 ${
+                activeTab === "dashboard"
+                  ? "border-blue-500 text-blue-600"
+                  : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+              }`}
+            >
+              <Users className="h-4 w-4" />
+              <span>Active Cases</span>
+              <span className="bg-blue-100 text-blue-600 text-xs px-2 py-1 rounded-full">
+                3
+              </span>
+            </button>
+            <button
+              onClick={() => setActiveTab("overview")}
+              className={`py-4 px-1 border-b-2 font-medium text-sm flex items-center space-x-2 ${
+                activeTab === "overview"
+                  ? "border-blue-500 text-blue-600"
+                  : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+              }`}
+            >
+              <FileText className="h-4 w-4" />
+              <span>Overview</span>
+            </button>
+            <button
+              onClick={() => setActiveTab("new-patient")}
+              className={`py-4 px-1 border-b-2 font-medium text-sm flex items-center space-x-2 ${
+                activeTab === "new-patient"
+                  ? "border-blue-500 text-blue-600"
+                  : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+              }`}
+            >
+              <FileText className="h-4 w-4" />
+              <span>New Patient</span>
+            </button>
+            <button
+              onClick={() => setActiveTab("history")}
+              className={`py-4 px-1 border-b-2 font-medium text-sm flex items-center space-x-2 ${
+                activeTab === "history"
+                  ? "border-blue-500 text-blue-600"
+                  : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+              }`}
+            >
+              <History className="h-4 w-4" />
+              <span>History</span>
+            </button>
+          </nav>
+        </div>
+      </div>
+
+      {/* Main Content */}
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        {renderActiveTab()}
       </main>
+
+      {/* Notification System */}
+      <NotificationSystem />
     </div>
   );
 }
